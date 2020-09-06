@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>用户信息分析</title>
+    <!--leaflet-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+        integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+        crossorigin=""></script>
+    <!--jquery-->
+    <script src="https://cdn.bootcss.com/jquery/1.9.1/jquery.js"></script>
+    <!--Bootstrap3-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+    <!--vue-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!--axios-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!--底图插件1-->
+    <script src="./js/common/leaflet.ChineseTmsProviders.js"></script>
+    <!--底图插件2-->
+    <!-- <script src="./js/common/esri-leaflet.js"></script> -->
+    <!--搜索插件-->
+    <script src="./js/common/leaflet-search.js"></script>
+    <link rel="stylesheet" href="./css/common/leaflet-search.css" />
+    <!--响应式侧边栏插件-->
+    <script src="./js/common/L.Control.Sidebar.js"></script>
+    <link rel="stylesheet" href="./css/common/L.Control.Sidebar.css">
+    <!--loading插件-->
+    <link href="./css/common/loading.css" rel="stylesheet">
+    <script src="./js/common/loading.js"></script>
+    <!--图片缩放-->
+    <script src="https://unpkg.com/viewerjs/dist/viewer.js"></script>
+    <script src="./js/common/jquery-viewer.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/viewerjs/dist/viewer.css">
+    <!--echars-->
+    <script src="./js/common/echarts.js"></script>
+    <!--ip定位，搜狐-->
+    <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+    <!--工具类-->
+    <script src="../../js/utils.js"></script>
+    <!--geojson-->
+    <script src="./js/geojson/test.js"></script>
+    <style>
+        #app-map7 {
+            height: 100vh;
+            width: 100%;
+        }
+
+        #map {
+            height: 100%;
+            width: 100%
+        }
+
+        .leaflet-sidebar {
+            width: 550px;
+        }
+
+        .table {
+            width: 100%;
+            height: 45%;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app-map7">
+        <!--侧边栏-->
+        <div id="sidebar">
+            <h2 class="text-center">用户信息分析</h2>
+            <!--图表容器-->
+            <div id="table1" class="table"></div>
+            <div id="table2" class="table">
+                <img style="width: 100%;height: 100%;" :src="wordCloudUrl" @click="imgScc">
+            </div>
+        </div>
+        <!--侧边栏end-->
+        <!--地图-->
+        <div id="map"></div>
+    </div>
+</body>
+<script type="text/javascript">
+
+    var sidebar;    //侧边框
+    var map;        //地图
+    var geoJSONLayer = L.geoJSON();
+    var app = new Vue({
+        el: "#app-map7",
+        data: function () {
+            return {
+                id: "",//景区id
+                wordCloudUrl: "",//词云链接
+            }
+        },
+        methods: {
+            //图片缩放
+            imgScc: function () {
+                var $image = $('#table2');
+                $image.viewer({
+                    inline: false, //inline设置为false，不然会在侧边框中显示
+                    viewed: function () {
+                        $image.viewer('zoomTo', 1);
+                    }
+                });
+            },
+            //创建饼图
+            createPie: function (elementId, text, dataLegend, name, dataValue) {
+                // 基于准备好的dom，初始化echarts实例
+                var myChart = echarts.init(document.getElementById(elementId));
+                var option = {
+                    title: {
+                        text: text,
+                        x: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        type: 'scroll',
+                        orient: 'vertical',
+                        right: 10,
+                        top: 20,
+                        bottom: 20,
+                        data: dataLegend
+                    },
+                    series: [
+                        {
+                            name: name,
+                            type: 'pie',
+                            radius: '55%',
+                            center: ['40%', '50%'],
+                            data: dataValue
+                        }
+                    ]
+                };
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+            }
+        },
+        //挂载时加载
+        mounted: function () {
+            var that = this;
+            //加载高德底图
+            const GeoDeBaseMap = L.tileLayer.chinaProvider('GaoDe.Normal.Map', {
+                maxZoom: 18,
+                minZoom: 5
+            });
+
+            var normal = L.layerGroup([GeoDeBaseMap]);
+            map = L.map("map", {
+                center: [28.19777526841951, 113.00039291381837],
+                zoom: 12,
+                layers: [normal]
+            });
+            //搜索插件
+            map.addControl(new L.Control.Search({ sourceData: searchByAjax, text: 'Color...', markerLocation: true, zoom: 15 }));
+            //侧边栏插件
+            sidebar = L.control.sidebar('sidebar', {
+                closeButton: true,
+                position: 'right'
+            });
+            map.addControl(sidebar);
+
+            
+            loading.showLoading({
+                type: 5,
+                tip: "正在获取用户信息"
+            })
+            var sid = getQueryVariable("sid")
+            if (sid != "") {
+                //根据sid查询景区信息
+                axios.get("http://120.79.198.96:8864/map/getScenicInfoBySid", {
+                    params: {
+                        sid: sid
+                    }
+                })
+                    .then(function (res) {
+                        //console.log(res);
+                        if (res.data.code == "200") {//景区位置信息查询成功
+                            var location = res.data.data.location.split(",");
+                            //设置地图位置和缩放级别
+                            map.setView([parseFloat(location[1]), parseFloat(location[0])], 15);
+                            //侧边栏弹出
+                            //sidebar.show();
+                            //axios处理地狱回调
+                            return axios.get("http://120.79.198.96:8864/map/generateUserSrc", {
+                                params: {
+                                    sid: sid,
+                                    cityCode:430100,
+                                    location:res.data.data.location
+                                }
+                            })
+                        }
+                    })
+                    .then(function (res) {
+                        //console.log(res);
+                        if (res.data.code == "200") {//用户信息生成成功
+                            //用户来源生成
+                            var userSrc = res.data.data.userSrcList;
+                            var dataName = [];
+                            var dataValue = [];
+                            for (let i = 0; i < userSrc.length; i++) {
+                                dataName[i] = userSrc[i].srcName;
+                                dataValue[i] = { name: userSrc[i].srcName, value: userSrc[i].count }
+                            }
+                            that.createPie('table1', 'app来源', dataName, 'app来源', dataValue);
+                            //词云生成链接
+                            that.wordCloudUrl = res.data.data.wordCloudUrl;
+                            //侧边框弹出
+                            sidebar.show();
+                            loading.hideLoading();
+                        }
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                    })
+            }
+        }
+    })
+
+</script>
+
+</html>

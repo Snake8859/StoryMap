@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>景区对比分析</title>
+    <!--leaflet-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+        integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+        crossorigin=""></script>
+    <!--vue-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!--axios-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!--jquery-->
+    <script src="https://cdn.bootcss.com/jquery/1.9.1/jquery.js"></script>
+    <!--Bootstrap3-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+    <!--底图插件1-->
+    <script src="./js/common/leaflet.ChineseTmsProviders.js"></script>
+    <!--底图插件2-->
+    <!-- <script src="./js/common/esri-leaflet.js"></script> -->
+    <!--搜索插件-->
+    <script src="./js/common/leaflet-search.js"></script>
+    <link rel="stylesheet" href="./css/common/leaflet-search.css" />
+    <!--响应式侧边栏插件-->
+    <script src="./js/common/L.Control.Sidebar.js"></script>
+    <link rel="stylesheet" href="./css/common/L.Control.Sidebar.css">
+    <!--echarts-->
+    <script src="./js/common/echarts.js"></script>
+    <!--geojson-->
+    <script src="./js/geojson/test.js"></script>
+    <!--ip定位，搜狐-->
+    <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+    <!--工具类-->
+    <script src="../../js/utils.js"></script>
+    <style>
+        #app-map2 {
+            height: 100vh;
+            width: 100%;
+        }
+
+        #map {
+            height: 100%;
+            width: 100%
+        }
+
+        .table {
+            width: 100%;
+            height: 75%;
+            margin-top: 15%;
+            padding: 15px;
+            border: 1px solid black;
+        }
+
+        .leaflet-sidebar {
+            width: 640px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app-map2">
+        <!--侧边栏-->
+        <div id="sidebar">
+            <h2 class="text-center">景区对比分析</h2>
+            <!--按钮组-->
+            <div class="row">
+                <div class="col-md-offset-2 col-md-5">
+                    <label class="radio-inline">
+                        <input type="radio" checked="true" name="radioOptions" id="radio1" value="option1" v-on:change="hCompare"> 宏观比较
+                    </label>
+                </div>
+                <div class="col-md-5">
+                    <label class="radio-inline">
+                        <input type="radio" name="radioOptions" id="radio2" value="option2" v-on:change="vCompare"> 横向比较
+                    </label>
+                </div>
+            </div>
+            <!--图表容器-->
+            <div id="table1" class="table"></div>
+            <div id="table2" class="table"></div>
+        </div>
+        <!--侧边栏end-->
+
+        <!--地图-->
+        <div id="map"></div>
+    </div>
+</body>
+<script type="text/javascript">
+    var sidebar;    //侧边框
+    var map;        //地图
+    var geoJSONLayer = L.geoJSON(); //geoJSON图层
+    var app = new Vue({
+        el: "#app-map2",
+        data: function() {
+            return {
+                id: "",//景区id
+                flag_h: true, //横向对比flag
+                flag_v: true //纵向对比flag
+            }
+        },
+        methods: {
+            //横向比较
+            hCompare: function (e) {
+                $("#table1").show();
+                $("#table2").hide();
+                var sid = getQueryVariable("sid");
+                if (sid != "") {//若sid不为空
+                    if (this.flag_h) {
+                        this.getTouristAmountByCommentInCity(sid);
+                        //this.flag_h = false; //图表数据已在，不需要再发起请求 不这样做，要使点击横向比较的时候，还能再显示自己景区的数据
+                    }
+                }
+            },
+            //纵向比较
+            vCompare: function (e) {
+                $("#table2").show();
+                $("#table1").hide();
+                if (this.flag_v) {
+                    this.getTouristAmountByCommentInScenic();
+                    this.flag_v = false; //图表数据已存在，不需要再发起请求
+                }
+            },
+            //创建多条折线图
+            craeteMultitermLineChart: function (elementId, dataLegend, dataSource, lineSeries) {
+                // 基于准备好的dom，初始化echarts实例
+                var myChart = echarts.init(document.getElementById(elementId));
+                var option = {
+                    legend: {
+                        data: dataLegend
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        showContent: true
+                    },
+                    dataset: {
+                        source: dataSource
+                    },
+                    xAxis: {
+                        type: 'category',
+                        axisLabel: {
+                            interval: 0
+                        }
+                    },
+                    yAxis: [
+                        {
+                            name: "游客量",
+                            tpye: 'value',
+                            axisLabel: {
+                                margin: 3,
+                                formatter: function (value, index) {
+                                    value = value + "万";
+                                    return value;
+                                }
+                            }
+                        }
+                    ],
+                    grid: { top: '45%', left: '15%' },
+                    series: lineSeries
+                };
+
+                myChart.on('updateAxisPointer', function (event) {
+                    var xAxisInfo = event.axesInfo[0];
+                    if (xAxisInfo) {
+                        var dimension = xAxisInfo.value + 1;
+                        myChart.setOption({
+                            series: {
+                                id: 'pie',
+                                label: {
+                                    formatter: '{b}: {@[' + dimension + ']}万 ({d}%)'
+                                },
+                                encode: {
+                                    value: dimension,
+                                    tooltip: dimension
+                                }
+                            }
+                        });
+                    }
+                });
+
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+            },
+            //根据sid查询景区与城市的游客量
+            getTouristAmountByCommentInCity: function (sid) {
+                var that = this;
+                if (sid != "") {
+                    axios.get("http://120.79.198.96:8864/map/generateTouristAmountByCommentInCity", {
+                        params: {
+                            sid: sid
+                        }
+                    })
+                        .then(function (res) {
+                            //console.log(res);
+                            if (res.data.code == "200") {
+                                var scenicTourist = res.data.data[sid];
+                                var scenicName = scenicTourist[0].name;
+
+                                var lineSeries = []
+
+                                var dataSource = [
+                                    ['月份', '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+                                ]
+                                //构建景区游客量折线数据格式
+                                var dataScenic = [scenicName];
+                                for (let i = 0; i < scenicTourist.length; i++) {
+                                    dataScenic[i + 1] = scenicTourist[i].count / 10;
+                                }
+                                dataSource.push(dataScenic);
+                                lineSeries.push({ type: 'line', smooth: true, seriesLayoutBy: 'row' })
+
+                                //构建城市游客量折线数据格式
+                                var dataCity = ["长沙"]
+                                var cityTourist = res.data.data["cs"];
+                                for (let i = 0; i < cityTourist.length; i++) {
+                                    dataCity[i + 1] = cityTourist[i].count / 10;
+                                }
+                                dataSource.push(dataCity);
+                                lineSeries.push({ type: 'line', smooth: true, seriesLayoutBy: 'row' })
+
+                                //构建饼图
+                                lineSeries.push({ type: 'pie', id: 'pie', radius: '30%', center: ['50%', '25%'], label: { formatter: '{b}: {@1月} ({d}%)' }, encode: { itemName: '月份', value: '1月', tooltip: '1月' } })
+
+                                var dataLegend = ["长沙", scenicName];
+                                that.craeteMultitermLineChart("table1", dataLegend, dataSource, lineSeries)
+                            }
+                        })
+                        .catch(function (err) {
+                            console.log(err);
+                        })
+                }
+            },
+            //查询各个景区的游客量
+            getTouristAmountByCommentInScenic: function () {
+                var that = this;
+                axios.get("http://120.79.198.96:8864/map/generateTouristAmountByCommentInScenic")
+                    .then(function (res) {
+                        //console.log(res);
+                        if (res.data.code == "200") {
+                            var allScenicTourist = res.data.data;
+                            var dataLegend = []; //图例
+                            var lineSeries = []; //折线
+                            //数据源
+                            var dataSource = [
+                                ['月份', '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+                            ];
+
+                            //获得所有景区id
+                            var keys = Object.keys(allScenicTourist);
+                            for (i in keys) {
+                                //console.log(allScenicTourist[keys[i]]);
+                                //获得每个景区内容
+                                var scenicTourist = allScenicTourist[keys[i]];
+                                //获得景区名
+                                var scenicName = scenicTourist[0].name;
+                                dataLegend.push(scenicName);
+                                //构建景区游客量折线数据格式
+                                var dataScenic = [scenicName];
+                                for (let i = 0; i < scenicTourist.length; i++) {
+                                    dataScenic[i + 1] = scenicTourist[i].count / 10;
+                                }
+                                dataSource.push(dataScenic);
+                                lineSeries.push({ type: 'line', smooth: true, seriesLayoutBy: 'row' });
+                            }
+                            //构建饼图
+                            lineSeries.push({ type: 'pie', id: 'pie', radius: '30%', center: ['50%', '25%'], label: { formatter: '{b}: {@1月} ({d}%)' }, encode: { itemName: '月份', value: '1月', tooltip: '1月' } })
+                            that.craeteMultitermLineChart("table2", dataLegend, dataSource, lineSeries)
+                        }
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                    })
+            }
+        },
+        //挂载时加载
+        mounted: function () {
+            var that = this;
+            //加载高德底图
+            const GeoDeBaseMap = L.tileLayer.chinaProvider('GaoDe.Normal.Map', {
+                maxZoom: 18,
+                minZoom: 0
+            });
+
+            var normal = L.layerGroup([GeoDeBaseMap]);
+            map = L.map("map", {
+                center: [28.19777526841951, 113.00039291381837],
+                zoom: 12,
+                layers: [normal]
+            });
+            //搜索插件
+            map.addControl(new L.Control.Search({ sourceData: searchByAjax, text: 'Color...', markerLocation: true, zoom: 15 }));
+            //侧边栏插件
+            sidebar = L.control.sidebar('sidebar', {
+                closeButton: true,
+                position: 'right'
+            });
+            map.addControl(sidebar);
+
+            var sid = getQueryVariable("sid");
+            if (sid != "") {//若sid不为空
+                var that = this;
+                //根据sid查询景区信息
+                axios.get("http://120.79.198.96:8864/map/getScenicInfoBySid", {
+                    params: {
+                        sid: sid
+                    }
+                })
+                    .then(function (res) {
+                        //console.log(res);
+                        if (res.data.code == "200") { //景区位置信息查询成功
+                            var location = res.data.data.location.split(",");
+                            //设置地图位置和缩放级别
+                            map.setView([parseFloat(location[1]), parseFloat(location[0])], 15);
+                            //加载横向比较
+                            $("#table2").hide();
+                            that.getTouristAmountByCommentInCity(sid);
+                            //侧边栏弹出
+                            sidebar.show();
+                        }
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                    })
+            }
+        }
+    })
+
+
+
+
+
+
+</script>
+
+</html>

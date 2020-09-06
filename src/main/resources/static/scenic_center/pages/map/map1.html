@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>景区信息</title>
+
+    <!--leaflet-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+        integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+        crossorigin=""></script>
+    <!--vue-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!--axios-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!--jquery-->
+    <script src="https://cdn.bootcss.com/jquery/1.9.1/jquery.js"></script>
+    <!--Bootstrap3-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+    <!--底图插件1-->
+    <script src="./js/common/leaflet.ChineseTmsProviders.js"></script>
+    <!--底图插件2-->
+    <!-- <script src="./js/common/esri-leaflet.js"></script> -->
+    <!--右键菜单插件-->
+    <script src="./js/map1/leaflet.contextmenu.js"></script>
+    <link rel="stylesheet" href="./css/map1/leaflet.contextmenu.css" />
+    <!--搜索插件-->
+    <script src="./js/common/leaflet-search.js"></script>
+    <link rel="stylesheet" href="./css/common/leaflet-search.css" />
+    <!--响应式侧边栏插件-->
+    <script src="./js/common/L.Control.Sidebar.js"></script>
+    <link rel="stylesheet" href="./css/common/L.Control.Sidebar.css">
+    <!--图片缩放-->
+    <script src="https://unpkg.com/viewerjs/dist/viewer.js"></script>
+    <script src="./js/common/jquery-viewer.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/viewerjs/dist/viewer.css">
+    <!--geojson-->
+    <script src="./js/geojson/test.js"></script>
+    <!--ip定位，搜狐-->
+    <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+    <!--工具类-->
+    <script src="../../js/utils.js"></script>
+    <!--图标-->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+
+    <style>
+        #app-map1 {
+            height: 100vh;
+            width: 100%;
+        }
+
+        #map {
+            height: 100%;
+            width: 100%
+        }
+
+        .spotImg {
+            width: 190px;
+            height: 200px;
+        }
+
+        .poi_info {
+            height: 50%;
+        }
+
+        .info-img {
+            display: block;
+            width: 14px;
+            height: 14px;
+            float: left;
+            padding: 2px, 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app-map1">
+        <!--侧边栏-->
+        <div id="sidebar">
+            <!--景区基本文本信息-->
+            <div id="poi-info">
+                <center>
+                    <h2>{{scenic.name}}</h2>
+                </center><br>
+                <div class="poi_info">
+                    <p> <i class="fa fa-map-marker" style="color:blue"></i> &nbsp;&nbsp;&nbsp; {{scenic.address}}</p>
+                </div><br>
+                <div class="poi_info" v-if="scenic.tel!=null">
+                    <p> <i class="fa fa-phone" style="color:darkorange"></i> &nbsp;&nbsp;&nbsp;<b>{{scenic.tel}}</b></p>
+                </div><br>
+                <div>
+                    <p><i class="fa fa-tag" style="color:deepskyblue"></i> &nbsp;&nbsp;&nbsp;{{scenic.tag}}</p>
+                </div>
+                <div v-if="scenic.starLevel!=null">
+                    <p><i class="fa fa-star" style="color:red"></i> &nbsp;&nbsp;&nbsp;{{scenic.starLevel}}</p>
+                </div>
+                <div class="poi_info" v-if="scenic.introduction!=''">
+                    <p class="lorem"><i class="fa fa-book" style="color:powderblue"></i>
+                        &nbsp;&nbsp;&nbsp;{{scenic.introduction}}</p>
+                </div>
+            </div>
+            <!--景区基本文本信息end-->
+
+            <!--景区图片-->
+            <p class="lorem">
+                <div id="imagesBox" style="width: 400px;margin-top: 10px;padding-right: 10px">
+                    <img style="max-width: 100%;max-height: 100%;" :src="item" v-for="(item,index) in scenic.pictureUrl"
+                        @click='imgScc'>
+                </div>
+            </p>
+            <!--景区图片end-->
+
+        </div>
+        <!--侧边栏end-->
+
+        <!--地图-->
+        <div id="map"></div>
+    </div>
+</body>
+<script type="text/javascript">
+
+    var sidebar; //侧边框
+    var map;    //地图
+    var geoJSONLayer = L.geoJSON(); //GeoJSON图层
+    var latlng; //标记点经纬度
+    var customIcon = L.icon({ //标记点样式
+        iconUrl: './images/a1.png',
+        iconSize: [32, 32]
+    })
+    var app = new Vue({
+        el: "#app-map1",
+        data: function () {
+            return {
+                //景区基本信息
+                scenic: {
+                    sid: "",
+                    name: "",
+                    address: "",
+                    tel: "",
+                    starLevel: "",
+                    tag: "",
+                    introduction: "",
+                    pictureUrl: []
+                }
+            }
+        },
+        methods: {
+            //标记点
+            makeMarker(e) {
+                var that = this;
+                //当前位置
+                sidebar.hide();
+                //获取经纬度
+                latlng = e.latlng;
+                //弹出景点编辑框
+                var popup = L.popup({
+                    maxWidth: 1000,
+                    minWidth: 300
+                })
+                map.once("popupopen", function (e) {
+                    /**
+                     * 1.创建标记点
+                     * 2.弹出编辑框，编辑该点的基本信息，编辑成功后，再刷新页面
+                     * （刷新页面，主要是这个气泡框弹出(加载js)和消失事件(删除js)，重新加载，不然once只执行一次，会导致问题）
+                     */
+                    //console.log(e)
+                    //弹出编辑框
+                    popup.setContent("<div id='components-spot'><spot-window></spot-window></div>");
+                    //加载js
+                    //景点编辑框组件
+                    var script = document.createElement("script");
+                    script.id = "component-window-js"
+                    script.type = "text/javascript";
+                    script.src = "./component/spot_window.js";
+                    document.body.appendChild(script);
+
+                });
+                map.once("popupclose", function (e) {
+                    //若无，删除js
+                    var script = document.getElementById("component-window-js");
+                    document.body.removeChild(script);
+                });
+                L.marker(e.latlng, { icon: customIcon }).bindPopup(popup).addTo(map);
+            },
+            //缩放至中心
+            centerMap(e) {
+                map.panTo(e.latlng);
+            },
+            //放大
+            zoomIn(e) {
+                map.zoomIn();
+            },
+            //缩小
+            zoomOut(e) {
+                map.zoomOut();
+            },
+            //图片缩放
+            imgScc: function () {
+                var $image = $('#imagesBox');
+                $image.viewer({
+                    inline: false, //inline设置为false，不然会在侧边框中显示
+                    viewed: function () {
+                        $image.viewer('zoomTo', 1);
+                    }
+                });
+            }
+        },
+        //挂载时加载
+        mounted: function () {
+            var that = this;
+            //加载高德底图
+            const GeoDeBaseMap = L.tileLayer.chinaProvider('GaoDe.Normal.Map', {
+                maxZoom: 18,
+                minZoom: 0
+            });
+            var normal = L.layerGroup([GeoDeBaseMap]);
+            map = L.map("map", {
+                center: [28.186914, 112.962093],
+                zoom: 15,
+                layers: [normal],
+                //右键菜单
+                contextmenu: true,
+                contextmenuWidth: 140,
+                contextmenuItems: [{
+                    text: '标记点',
+                    callback: that.makeMarker
+                }, {
+                    text: '平移',
+                    callback: that.centerMap
+                }, '-', {
+                    text: '放大',
+                    icon: 'images/zoom-in.png',
+                    callback: that.zoomIn
+                }, {
+                    text: '缩小',
+                    icon: 'images/zoom-out.png',
+                    callback: that.zoomOut
+                }]
+            });
+            //搜索插件
+            map.addControl(new L.Control.Search({ sourceData: searchByAjax, text: 'Color...', markerLocation: true, zoom: 15 }));
+            //侧边栏插件
+            sidebar = L.control.sidebar('sidebar', {
+                closeButton: true,
+                position: 'right'
+            });
+            map.addControl(sidebar);
+
+
+            var sid = getQueryVariable("sid");
+            if (sid != "") {//若sid不为空
+                //根据sid查询景区信息
+                axios.get("http://120.79.198.96:8864/map/getScenicInfoBySid", {
+                    params: {
+                        sid: sid
+                    }
+                })
+                    .then(function (res) {
+                        //console.log(res);
+                        if (res.data.code == "200") { //景区信息查询成功
+                            that.scenic.sid = res.data.data.sid;
+                            that.scenic.name = res.data.data.name;
+                            that.scenic.address = res.data.data.address;
+                            that.scenic.introduction = res.data.data.introduction;
+                            that.scenic.starLevel = res.data.data.starLevel;
+                            that.scenic.tag = res.data.data.tag;
+                            that.scenic.tel = res.data.data.tel;
+                            //图片Json转回对象
+                            var pictureUrl = JSON.parse(res.data.data.pictureUrl)
+                            that.scenic.pictureUrl = pictureUrl;
+                            var location = res.data.data.location.split(",");
+                            //设置地图位置和缩放级别
+                            map.setView([parseFloat(location[1]), parseFloat(location[0])], 15);
+
+                            //对应矢量面
+                            var myStyle = {
+                                "color": "blue",
+                                "opacity": 0.3,
+                            };
+                            //加载对应矢量面
+                            geoJSONLayer = L.geoJSON(jq, {
+                                style: myStyle,
+                                filter: function (feature) {
+                                    //console.log(feature);
+                                    if (feature.properties.id == that.scenic.sid) {
+                                        //若搜索出图层id与geojson面id一致
+                                        //console.log("显示")
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                            }).addTo(map);
+
+                            //侧边栏弹出
+                            sidebar.show();
+                            //axios处理地狱回调 根据sid查询景点信息
+                            return axios.get("http://120.79.198.96:8864/map/getScenicPointInfoBySid", {
+                                params: {
+                                    sid: sid
+                                }
+                            })
+                        }
+                    })
+                    .then(function (res) {
+                        //创建图层组
+                        var markerGroup = L.layerGroup();
+                        //console.log(res);
+                        if (res.data.code == "200") {//景点信息查询成功
+                            //获取景点信息列表
+                            var spotInfoList = res.data.data;
+                            for (let i = 0; i < spotInfoList.length; i++) {
+                                //console.log(spotInfoList[i])
+                                //标记点
+                                var marker = L.marker([spotInfoList[i].lat, spotInfoList[i].lng], { icon: customIcon });
+                                //鼠标悬停框
+                                var content = '<div class="media"><div class="media-left"><a href="#"><img class="media-object spotImg"src="' + spotInfoList[i].pictureUrl + '"></a></div><div class="media-body"><h4 class="media-heading">' + spotInfoList[i].name + '</h4>' + spotInfoList[i].remark + '</div></div>';  //悬停框内容
+                                //marker.bindTooltip(content, { direction: 'top' })
+                                //   .openTooltip();
+                                marker.bindPopup(content, { direction: 'top' })
+                                    .openPopup();
+                                markerGroup.addLayer(marker);
+                            }
+                            markerGroup.addTo(map);
+                        }
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                    })
+            }
+        }
+    })  
+</script>
+
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>图片放大与缩小</title>
+    <!--jquery-->
+    <script src="https://cdn.bootcss.com/jquery/1.9.1/jquery.js"></script>
+    <script src="https://unpkg.com/viewerjs/dist/viewer.js"></script>
+    <script src="./js/map7/jquery-viewer.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/viewerjs/dist/viewer.css">
+
+</head>
+
+<body>
+
+    <!-- a block container is required -->
+    <!-- <div>
+        <img id="image" src="./images/a1.png" alt="Picture">
+    </div> -->
+    <div>
+        <div id="images">
+            <img src="./images/a1.png">
+        </div>
+    </div>
+    <script type="text/javascript">
+        var $image = $('#image');
+        $image.viewer({
+            inline: true,
+            viewed: function () {
+                $image.viewer('zoomTo', 1);
+            }
+        });
+        // Get the Viewer.js instance after initialized
+        var viewer = $image.data('viewer');
+        // View a list of images
+        $('#images').viewer();
+    </script>
+</body>
+
+</html>

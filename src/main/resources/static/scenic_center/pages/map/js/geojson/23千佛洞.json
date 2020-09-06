@@ -1,0 +1,221 @@
+{
+	"status": "1",
+	"data": {
+		"base": {
+			"poi_tag": "",
+			"code": "430182",
+			"importance_vip_flag": 0,
+			"city_adcode": "430100",
+			"telephone": "0731-87550989",
+			"new_type": "110203",
+			"city_name": "长沙市",
+			"new_keytype": "风景名胜;风景名胜;省级景点",
+			"checked": "1",
+			"title": "风景名胜",
+			"cre_flag": 0,
+			"std_t_tag_0_v": "3A景区",
+			"navi_geometry": "112.139153,28.214829",
+			"classify": "风景名胜",
+			"business": "scenic",
+			"shop_info": {
+				"claim": 2
+			},
+			"poi_tag_has_t_tag": 0,
+			"pixelx": "217834766",
+			"pixely": "112273888",
+			"geodata": {
+				"aoi": [{
+					"name": "千佛洞",
+					"mainpoi": "B02DB06901",
+					"area": 13920.433547
+				}]
+			},
+			"poiid": "B02DB06901",
+			"distance": 0,
+			"name": "千佛洞",
+			"end_poi_extension": "0",
+			"y": "28.214302",
+			"x": "112.139186",
+			"address": "长沙市宁乡市黄材镇石龙洞村",
+			"tag": "风景名胜;风景名胜;省级景点",
+			"picLen": 5
+		},
+		"spec": {
+			"mining_shape": {
+				"aoiid": "G00AOI000001WJW4",
+				"center": "112.139186,28.214302",
+				"area": "13920.433547",
+				"sp_type": "3310",
+				"shape": "112.140123,28.214119;112.138577,28.213566;112.138378,28.214702;112.138758,28.214746;112.139045,28.214774;112.139184,28.214821;112.139278,28.214899;112.139404,28.214914;112.139509,28.214937;112.139612,28.214955;112.140123,28.214287;112.140142,28.214197;112.140123,28.214119",
+				"level": 19,
+				"type": "0"
+			},
+			"sp_pic": []
+		},
+		"pic_cover": {
+			"url": "http://store.is.autonavi.com/showpic/cd43f74cdc7d990d3db575535a1c61f8"
+		},
+		"pic": [{
+			"weight": 1001,
+			"srcheight": 10000,
+			"url": "http://store.is.autonavi.com/showpic/cd43f74cdc7d990d3db575535a1c61f8?type=pic",
+			"text_sensibility": "2",
+			"iscover": 1,
+			"srcwidth": 10000
+		}, {
+			"url": "http://store.is.autonavi.com/showpic/8baa0eca0fa009932308078f4110af23?type=pic",
+			"text_sensibility": "2",
+			"weight": 999,
+			"title": "千佛洞"
+		}, {
+			"url": "http://store.is.autonavi.com/showpic/c57944fbe57cd90feab0144629543224?type=pic",
+			"text_sensibility": "2",
+			"weight": 998
+		}, {
+			"url": "http://store.is.autonavi.com/showpic/e01b9719adea93e171737ceffdaab85e?type=pic",
+			"text_sensibility": "2",
+			"weight": 997,
+			"title": "千佛洞"
+		}],
+		"scenic": {
+			"s_duration": "1-2小时",
+			"src_type_mix": "cms_deep_fix;dp_api;gaode_qunar;scenic_17u_api;scenic_ctrip_grab;scenic_lianjing_api;scenic_rlt_info;scenic_tuniu_api;sm_mfw_info",
+			"have_in_spots": 0,
+			"src_id": "B02DB06901",
+			"src_star": "4.5",
+			"business": "scenic",
+			"level": "3A景区",
+			"season": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+			"price": "45.00",
+			"have_rec_food": 0,
+			"rec_sports": [],
+			"intro": "宁乡千佛洞是距今3亿6千万年前形成的溶洞,地貌复杂,并有罕见的洞内峡谷,垂直高度近100米。宁乡千佛洞位于距宁乡县城62公里处的西部山区,境内山清水秀,奇峰峻岭,石龙洞、峡溪、猴公大山,少年水库四大景点共同勾勒出崔坪的秀美和壮丽。石龙洞(原名十三洞)处于风景秀美的石龙山下。相传由十三个连环洞组成,故名十三洞。石龙洞是长沙地区景观最集中的石灰岩溶洞,据专家分析其全长达2300米,洞谷幽深,迂回曲折,神秘莫测。洞洞相连,洞内有洞,大的洞可容纳数千人,狭窄处仅容纳一人通过。洞内的石钟乳、石笋、石柱千姿百态,阴河、瀑布暗地横生,奇景迭出。洞内冬暖夏凉,是供人避暑、休闲的好去处。从神奇的石龙洞出来,乘车1公里便进入悬崖壁立的天然峡谷—峡溪,溪长5.6公里,两岸青山对峙,如刀削斧劈,瀑布飞流,似银链直挂;溪间怪石奇异,美不胜收;其溪曲折迭宕,深谷幽潭,是漂流的好去处。穿峡溪,登林荫石道,上猴公大山。其主峰海拔1100米,处宁乡、安化、桃江三县交界处,登上顶峰放目远眺,顿感心旷神怡,“会当凌绝顶,一览众山小”的诗境由然而生。自猴公大山西下便可达国家小一型水库—少年水库,其蓄水量为165万立方米,库内水清如镜,鱼类繁多,四周苍松翠竹,倒映其中,如诗如画,美不胜收。",
+			"heat_map": "1",
+			"season_desc": "全年",
+			"info_weburl": "http://menpiao.tuniu.com/t_5012?p=14551&cmpid=mkt_06025201",
+			"src_type": "cms_deep_merge",
+			"opentime2": "08:00-18:00"
+		},
+		"deep": {
+			"s_duration": "1-2小时",
+			"src_type_mix": "cms_deep_fix;dp_api;gaode_qunar;scenic_17u_api;scenic_ctrip_grab;scenic_lianjing_api;scenic_rlt_info;scenic_tuniu_api;sm_mfw_info",
+			"have_in_spots": 0,
+			"src_id": "B02DB06901",
+			"src_star": "4.5",
+			"business": "scenic",
+			"level": "3A景区",
+			"season": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+			"price": "45.00",
+			"have_rec_food": 0,
+			"rec_sports": [],
+			"intro": "宁乡千佛洞是距今3亿6千万年前形成的溶洞,地貌复杂,并有罕见的洞内峡谷,垂直高度近100米。宁乡千佛洞位于距宁乡县城62公里处的西部山区,境内山清水秀,奇峰峻岭,石龙洞、峡溪、猴公大山,少年水库四大景点共同勾勒出崔坪的秀美和壮丽。石龙洞(原名十三洞)处于风景秀美的石龙山下。相传由十三个连环洞组成,故名十三洞。石龙洞是长沙地区景观最集中的石灰岩溶洞,据专家分析其全长达2300米,洞谷幽深,迂回曲折,神秘莫测。洞洞相连,洞内有洞,大的洞可容纳数千人,狭窄处仅容纳一人通过。洞内的石钟乳、石笋、石柱千姿百态,阴河、瀑布暗地横生,奇景迭出。洞内冬暖夏凉,是供人避暑、休闲的好去处。从神奇的石龙洞出来,乘车1公里便进入悬崖壁立的天然峡谷—峡溪,溪长5.6公里,两岸青山对峙,如刀削斧劈,瀑布飞流,似银链直挂;溪间怪石奇异,美不胜收;其溪曲折迭宕,深谷幽潭,是漂流的好去处。穿峡溪,登林荫石道,上猴公大山。其主峰海拔1100米,处宁乡、安化、桃江三县交界处,登上顶峰放目远眺,顿感心旷神怡,“会当凌绝顶,一览众山小”的诗境由然而生。自猴公大山西下便可达国家小一型水库—少年水库,其蓄水量为165万立方米,库内水清如镜,鱼类繁多,四周苍松翠竹,倒映其中,如诗如画,美不胜收。",
+			"heat_map": "1",
+			"season_desc": "全年",
+			"info_weburl": "http://menpiao.tuniu.com/t_5012?p=14551&cmpid=mkt_06025201",
+			"src_type": "cms_deep_merge",
+			"opentime2": "08:00-18:00"
+		},
+		"rti": {
+			"scenic_ticket_flag": [],
+			"review_entrance": 1,
+			"review_count": 303,
+			"scenic_guide": {
+				"line_count": 0,
+				"line_poi_count": 0,
+				"max_poi_count": 0,
+				"is_txt_tts": 0
+			},
+			"review_labels": [],
+			"review_summary": "",
+			"has_discount_flag": 0
+		},
+		"review": {
+			"comment": [{
+				"quality_flag": 72,
+				"author_profileurl": "http://store.is.autonavi.com/showpic/9b078c0a9961efbf1d2d9b98da2eb2c6",
+				"review_wapurl": "http://m.dianping.com/shop/review/565989846",
+				"labels": [],
+				"src_name": "大众点评",
+				"review_appurl": {
+					"ios_appurl": "",
+					"android_appurl": ""
+				},
+				"gold_type": "23",
+				"pic_info": [{
+					"url": "http://store.is.autonavi.com/showpic/90a0f5bf4f01e1663e9505ea4a157f3f",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/9f7bdf40ca1ae262c1aaaedad2da65e2",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/d83314d9606f809153b11be2ffb8b220",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/1fa3731f31d15644558e9cfa9b9a0b11",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/2aaa00805f94dffed1dfb02421d2b524",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/44edc57e472956482ff148c23b9226da",
+					"source": "图片来源：大众点评"
+				}],
+				"author": "香蕉你个啵娜娜",
+				"review": "跟家人从长沙自驾游过去的，感觉饶了好久才到景区，到了景区感觉人蛮少的，在点评团的券，78元/人，需要提前两个小时预订，景区下午六点下班了，到了之后还等了15分钟，坐船进去的，有个景区工作人员进行谅解，也是比较随意了。进去还是有点冷的，只坐了一小段距离就下船走路了，里面还有很多都还没造好，全程大概四五十分钟左右，最后一张图是我走最后面，拍的一张，很长比较陡的一个出口，只能说一般般，不是很推荐…",
+				"score": 3,
+				"recommend": "",
+				"src_type": "dp_mapi",
+				"review_id": "565989846",
+				"review_weburl": "",
+				"gaode_coin": 20,
+				"like_num": "0",
+				"aos_tag_score": 22.400000000000002,
+				"high_quality": 0,
+				"gold_num": 20,
+				"time": "2019-06-19",
+				"author_id": ""
+			}, {
+				"quality_flag": 42,
+				"author_profileurl": "http://store.is.autonavi.com/showpic/041ef247ea4f69c0ca54f5ae90e3ba81",
+				"review_wapurl": "http://m.dianping.com/shop/review/599784988",
+				"labels": [],
+				"src_name": "大众点评",
+				"review_appurl": {
+					"ios_appurl": "",
+					"android_appurl": ""
+				},
+				"gold_type": "23",
+				"pic_info": [{
+					"url": "http://store.is.autonavi.com/showpic/4bb8437eecd208320acbad553eb14f03",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/3be7bd6ef29775d04609a2221a97b3fc",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/53e41f9901c9db611e8fb642988e7b06",
+					"source": "图片来源：大众点评"
+				}],
+				"author": "呆道",
+				"review": "洞里蛮凉快的，夏天去是个不错的选择。一开始坐船进去，温度就有明显感觉下降了，但太矮了都要低着头，还有一些蝙蝠，蛮潮湿的。我自己感觉还行，蛮好新奇感的。",
+				"score": 3,
+				"recommend": "",
+				"src_type": "dp_mapi",
+				"review_id": "599784988",
+				"review_weburl": "",
+				"gaode_coin": 20,
+				"like_num": "0",
+				"aos_tag_score": 21,
+				"high_quality": 0,
+				"gold_num": 2,
+				"time": "2019-08-20",
+				"author_id": ""
+			}]
+		},
+		"score": {
+			"星级": "3A景区",
+			"总分": "4.5"
+		},
+		"src_info": [],
+		"share_url": "http://wb.amap.com/?p=B02DB06901%2C28.214302%2C112.139186%2C%E5%8D%83%E4%BD%9B%E6%B4%9E%2C%E9%95%BF%E6%B2%99%E5%B8%82%E5%AE%81%E4%B9%A1%E5%B8%82%E9%BB%84%E6%9D%90%E9%95%87%E7%9F%B3%E9%BE%99%E6%B4%9E%E6%9D%91"
+	}
+}

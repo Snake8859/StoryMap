@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>游客导向系统</title>
+    <meta charset="UTF-8">
+    <!--移动端浏览器禁用页面缩放-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="shortcut icon" href="images/tourist.png" />
+    <!--jquery-->
+    <script src="https://cdn.bootcss.com/jquery/1.9.1/jquery.js"></script>
+    <!--Bootstrap3-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+    <!--leaflet-->
+    <link href="https://cdn.bootcss.com/leaflet/1.3.1/leaflet.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.bootcss.com/leaflet/1.3.1/leaflet.js" type="text/javascript"></script>
+    <!--axios-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!--vue-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!--底图插件1-->
+    <script src="./js/common/leaflet.ChineseTmsProviders.js"></script>
+    <!--底图插件2-->
+    <!-- <script src="./js/common/esri-leaflet.js"></script> -->
+    <!--搜索插件-->
+    <link rel="stylesheet" href="./css/common/leaflet-search.css" />
+    <script src="./js/common/leaflet-search.js"></script>
+    <!--侧边框插件-->
+    <link rel="stylesheet" href="./css/map1/L.Control.SlideMenu.css">
+    <script src="./js/map1/L.Control.SlideMenu.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--自定义图标插件-->
+    <script src="./js/map1/Leaflet.Control.Custom.js"></script>
+    <!--图层插件-->
+    <link rel="stylesheet" href="./css/map1/leaflet-panel-layers.css" />
+    <script src="./js/map1/leaflet-panel-layers.js"></script>
+    <!--ip定位，搜狐-->
+    <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+    <!--高德地图-->
+    <script type="text/javascript"
+        src="https://webapi.amap.com/maps?v=1.4.15&key=daa4e1759839a0efc584e06f2d9d106e"></script>
+    <!--loading插件-->
+    <link href="./css/map1/loading.css" rel="stylesheet">
+    <script src="./js/map1/loading.js"></script>
+    <!--下拉框-->
+    <link href="./css/map1/jquery.searchableSelect.css" rel="stylesheet" type="text/css">
+    <script src="./js/map1/jquery.searchableSelect.js"></script>
+    <!--geojson-->
+    <script src="./js/geojson/test.js"></script>
+    <!--utils-->
+    <script src="./js/common/utils.js"></script>
+    <!--amap导航-->
+    <link rel="stylesheet" href="./css/map2/routing.css">
+    <script src="./js/map2/L.ChinaProj.js"></script>
+    <script src="./js/map2/L.Routing.js"></script>
+    <script src="./js/map2/L.Request.js"></script>
+    <script src="./js/map2/L.Routing.Conf.js"></script>
+    <script src="./js/map2/L.Routing.Reader.js"></script>
+    <script src="./js/map2/L.Routing.Bywalk.js"></script>
+    <script src="./js/map2/L.Routing.Bybus.js"></script>
+    <script src="./js/map2/L.Routing.Bycar.js"></script>
+    <script src="./js/map2/L.Routing.Query.js"></script>
+    <style>
+        h3 {
+            font-size: 24px;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            color: darkcyan;
+            text-align: center;
+        }
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        #app-map1 {
+            height: 100%;
+            width: 100%;
+        }
+
+        html,
+        body,
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .poiSearch {
+            margin: 10px;
+        }
+
+        .aroundSearchBtn {
+            position: relative;
+            z-index: 995;
+            margin: 90vh 0 0 9vh;
+            width: 70%;
+            background-color: white;
+            display: inline-block;
+            padding: 0.8em 3em 0.8em 3em;
+            border-radius: 100px;
+            font-family: "Raleway";
+            box-shadow: 0px 5px 40px rgba(52, 52, 52, 0.6);
+            color: #343434;
+            text-decoration: none;
+            font-size: 1.2em;
+            overflow: hidden;
+            backface-visibility: hidden;
+        }
+        .weather {
+            background-color: azure;
+            box-shadow: 0px 5px 40px rgba(52, 52, 52, 0.6);
+            font-family: 'Lato', sans-serif;
+            width: 10vh;
+            height: 20vh;
+        }
+
+        .weatherMessage {
+            font-size: 0.8rem;
+            line-height: 0.8;
+            text-align: center;
+            padding: 2px;
+        }
+
+        p {
+            margin: 0 0 2px;
+        }
+
+        .poiWordCss {
+            /* background: rgba(27, 26, 26, 0.2); */
+            font-family: 'Microsoft YaHei', 'Lantinghei SC', 'Open Sans', Arial, 'Hiragino Sans GB', 'STHeiti', 'WenQuanYi Micro Hei', 'SimSun', sans-serif;
+            transition: all 0.3s ease-out;
+            text-align: left;
+            cursor: no-drop;
+            color: plum;
+        }
+
+        .poiWordCss:hover {
+            transform: translateX(12px) scale(1.3);
+        }
+
+        strong {
+            color: rgba(228, 13, 163, 0.63)
+        }
+
+        .selector {
+            border: 2px solid #269abc;
+            width: 75%;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: #555;
+            border-radius: 10%;
+        }
+
+        .select-item {
+            border: 2px solid #f60;
+            font-size: 14px;
+            color: #286090;
+            line-height: 36px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app-map1">
+        <div id="map">
+            <!--周边景点start-->
+            <div>
+                <button class="aroundSearchBtn" @click="searchAroundScenic">
+                    周边景区
+                </button>
+            </div>
+            <!--周边景点end-->
+        </div>
+        
+        <!--导航start-->
+        <div class="rouring-tools">
+            <ul class="routing-tools-method">
+                <li>
+                    <div id="Bycar" @click="choseNavigationWay('Bycar')">
+                        <i class="fa fa-car fa-2x"></i>
+                        <p><b>驾车</b></p>
+                    </div>
+        
+        
+                </li>
+                <li>
+                    <div id="Bybus" @click="choseNavigationWay('Bybus')">
+                        <i class="fa fa-bus fa-2x"></i>
+                        <p><b>公共交通</b></p>
+                    </div>
+        
+                </li>
+                <li>
+                    <div id="Bywalk" @click="choseNavigationWay('Bywalk')">
+                        <i class="fa fa-blind fa-2x"></i>
+                        <p><b>步行</b></p>
+                    </div>
+        
+                </li>
+            </ul>
+            <ul class="routing-tools-textinput">
+                <li>
+                    <div class="container">
+                        <div class="col-xs-2">
+                            <h5><b>起点</b></h5>     
+                        </div>
+                        <div class="col-xs-6">
+                            <select id="siteRouteChoseFrom">
+                            </select>
+                        </div>
+                    </div>
+                    
+                </li>
+            </ul>
+
+            <ul class="routing-tools-textinput">
+                <li>
+                    <div class="container">
+                        <div class="col-xs-2">
+                            <h5><b>终点</b></h5>     
+                        </div>
+                        <div class="col-xs-6">
+                            <select id="siteRouteChoseTo">
+                            </select>
+                        </div>   
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!--导航end-->
+
+        <!--周边设施start-->
+        <div id="poiSearch" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+            aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+
+                    <div class="container poiSearch">
+                        <div class="col-xs-offset-2 col-xs-4">
+                            <label for="place" class="control-label">地点</label>
+                        </div>
+                        <div id="aroundPoi" class="col-xs-offset-1 col-xs-8">
+                            <!-- <input type="email" class="form-control" id="place" placeholder="请输入地点"> -->
+                            <select id="siteChose">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="container poiSearch">
+                        <div class="col-xs-offset-2 col-xs-4">
+                            <label for="aroundFacilities" class="control-label">周边设施</label>
+                        </div>
+
+                        <div class="col-xs-offset-2 col-xs-8">
+                            <select v-model="poiWord" class="form-control">
+                                <option>酒店</option>
+                                <option>饭店</option>
+                                <option>厕所</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="container poiSearch">
+                        <div class="col-xs-offset-2 col-xs-8">
+                            <button type="submit" class="btn btn-primary btn-block" @click="searchAroundPoi">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--周边设施end-->
+
+        <!--标记打卡start-->
+        <div id="clockIn" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+            aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="form-group">
+                        <label for="placeName" class="col-sm-2 control-label">景区名称</label>
+                        <div class="col-sm-10">
+                            <!-- <input type="email" class="form-control" id="place" placeholder="橘子洲" readonly> -->
+                            <select class="selector" v-model="spot_check.sid_cur" @change="choseScenicPoint">
+                                <option class="select-item" v-for="item in scenicInfo" :value="item.sid">{{item.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="placeName" class="col-sm-2 control-label">景点名称</label>
+                        <div class="col-sm-10">
+                            <select class="selector" v-model="spot_check.spotid_cur">
+                                <option class="select-item" v-for="item in scenicPointInfo" :value="item.spotid">
+                                    {{item.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="words" class="col-sm-2 control-label">边走边记</label>
+                        <div class="col-sm-10">
+                            <textarea v-model="spot_check.thoughts" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="images" class="col-sm-2 control-label">图片</label>
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <input v-if="flag_img" type='file' @change='uploadImg'></input>
+                            <img style="max-width: 50%;" class='spotImg' v-else :src="spot_check.pictureUrl">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <h6>{{spot_check.address}}</h6>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="button" class="btn btn-primary btn-block"
+                                @click="clockInScenicPoint">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--标记打卡end-->
+    </div>
+</body>
+
+<script type="text/javascript">
+
+    var map; //地图
+    var panelLayers; //图层控件组
+    var route; //导航
+    var geoJSONLayer = L.geoJSON(); //GeoJSON图层
+    var markers = L.layerGroup(); //定位点集图层组
+
+
+    var aroundScenicsLayer = L.layerGroup(); //周边景区图层
+    var poiScenics1Layer = L.layerGroup(); //周边设施图层1 酒店
+    var poiScenics2Layer = L.layerGroup(); //周边设施图层2 饭点
+    var poiScenics3Layer = L.layerGroup(); //周边设施图层3 厕所
+    var scenicsPointLayer = L.layerGroup(); //景点图层
+    var spotmarkers = L.layerGroup(); //打卡点图层组
+
+    
+
+    var app = new Vue({
+        el: "#app-map1",
+        data: {
+            adcode: "", //城市编号
+            poiWord: "", //poi关键词
+            flag_point: false, //打卡标识符
+            flag_img: false, //图片上传标识符
+            scenicInfo: [], //景区信息
+            scenicPointInfo: [], //景点信息
+            spot_check: {
+                sid_cur: "",//当前所选景区
+                spotid_cur: "", //当前所选景点
+                thoughts: "",//感想
+                pictureUrl: "", //打卡图片列表
+                address: "",//打卡地址
+                lat: "", // 经度
+                lng: "" //纬度
+            },
+        },
+        methods: {
+            //天气查询
+            weather: function () {
+                //切换 jquery的ajax axios无法jsonp跨域
+                $.ajax({
+                    type: 'get',
+                    async: false,
+                    url: 'http://api.k780.com/?app=weather.today&weaid=长沙&appkey=45063&sign=08d111ff6418e93841849477c4adce40&format=json&jsoncallback=data',
+                    dataType: 'jsonp',
+                    jsonp: 'callback',
+                    jsonpCallback: 'data',
+                    success: function (data) {
+                        if (data.success != '1') {
+                            alert(data.msgid + ' ' + data.msg);
+                            exit;
+                        }
+
+                        //console.log(data);
+                        //自定义功能按钮插件 左侧天气
+                        L.control.custom({
+                            position: 'topleft',
+                            content: '<div class="weather"><div class="alert alert-success" role="alert"><img style="width: 6vh;"  src="' + data.result.weather_icon + '" /></div><p class="weatherMessage">' + data.result.weather + '</p><p class="weatherMessage">' + data.result.temperature + '</p><p class="weatherMessage">' + data.result.week + '</p></div>',
+                            style:
+                            {
+                                margin: '10px',
+                                padding: '0px 0 0 0',
+                                cursor: 'pointer'
+                            },
+                            datas:
+                            {
+                                'foo': 'bar',
+                            }
+                        })
+                            .addTo(map);
+                    },
+                    error: function () {
+                        alert('fail');
+                    }
+                });
+            },
+            //定位
+            location() {
+                var that = this;
+                //定位 高德地图
+                loading.showLoading({
+                    type: 4,
+                    tip: "正在定位"
+                })
+
+                AMap.plugin('AMap.Geolocation', function () {
+                    var geolocation = new AMap.Geolocation({
+                        enableHighAccuracy: true,//是否使用高精度定位，默认:true
+                        timeout: 10000,          //超过10秒后停止定位，默认：5s
+                        buttonPosition: 'RB',    //定位按钮的停靠位置
+                        buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+                        zoomToAccuracy: true,   //定位成功后是否自动调整地图视野到定位点
+                    });
+                    //map.addControl(geolocation);
+                    geolocation.getCurrentPosition(function (status, result) {
+                        //console.log(status)
+                        if (status == 'complete') {
+                            that.onComplete(result)
+                        } else {
+                            that.onError(result)
+                        }
+                    });
+                });
+
+            },
+            //定位成功时
+            onComplete(data) {
+                let lat = parseFloat(data.position.lat)
+                let lng = parseFloat(data.position.lng)
+                var marker_cur = L.marker([lat, lng]);
+                markers.addLayer(marker_cur);
+                map.addLayer(markers);
+                map.setView([lat, lng], 18)
+                loading.hideLoading();
+            },
+            //定位失败时
+            onError(data) {
+                console.log(data)
+                loading.hideLoading();
+                alert("定位失败");
+            },
+            //周边景区搜索
+            searchAroundScenic: function () {
+                console.log("周边景区搜索");
+                //ip定位（城市级别）
+                axios.get("https://restapi.amap.com/v3/ip", {
+                    params: {
+                        key: "daa4e1759839a0efc584e06f2d9d106e",
+                        ip: returnCitySN.cip,
+                    }
+                })
+                    .then(function (res) {
+                        //console.log(res);
+                        this.adcode = res.data.adcode;
+                        //axios处理地狱回调 查询附近景区（城市级别）
+                        return axios.get("https://restapi.amap.com/v3/place/text", {
+                            params: {
+                                key: "daa4e1759839a0efc584e06f2d9d106e",
+                                keywords: "景区",
+                                types: "110000|110100|110101|110102|110103|110104|110105|110106|110200|110201|110202|110203|110204|110205|110206|110207|110208|110209",
+                                city: res.data.adcode,
+                            }
+                        })
+                    })
+                    .then(function (res) {
+                        //console.log(res);
+                        var that = this;
+                        var jingquIcon = L.icon({
+                            iconUrl: './images/jingqu.png',
+                            iconSize: [32, 32], // size of the icon
+                        });
+                        //清除定位图层
+                        markers.clearLayers();
+                        //清楚之前自身图层
+                        panelLayers.removeLayer(aroundScenicsLayer);
+                        aroundScenicsLayer.clearLayers();
+
+                        //获取poi集合
+                        var pois = res.data.pois
+                        for (let i = 0; i < pois.length; i++) {//遍历poi集合
+                            var poi = pois[i];
+                            var latlng = poi.location.split(",");
+                            var marker = L.marker([parseFloat(latlng[1]), parseFloat(latlng[0])], { icon: jingquIcon });
+                            marker.sid = poi.id;
+                            //绑定点击事件
+                            marker.on('click', function (res) {
+                                //console.log(res);
+                                //取出sid
+                                var sid = res.target.sid;
+                                var latlng = res.latlng
+                                //查询景区信息
+                                axios.get("http://120.79.198.96:8864/map/getScenicInfo", {
+                                    params: {
+                                        sid: sid,
+                                        cityCode: that.adcode,
+                                        location: latlng.lng + "," + latlng.lat
+                                    }
+                                })
+                                    .then(function (res) {
+                                        //console.log(res);
+                                        if (res.data.code == "200") {
+                                            var scenicInfo = res.data.data;
+                                            //清除之前内容
+                                            slideMenu.onRemove(map);
+
+                                            var pictureUrl = JSON.parse(scenicInfo.pictureUrl);
+                                            var imgContents = "<br/>";
+                                            for (let i = 0; i < pictureUrl.length; i++) {
+                                                imgContents += '<img style="max-width: 100%;max-height: 100%;" src=' + pictureUrl[i] + '>';
+                                            }
+                                            if (scenicInfo.tel == null) {
+                                                scenicInfo.tel = "暂无联系方式";
+                                            }
+                                            if (scenicInfo.starLevel == null) {
+                                                scenicInfo.starLevel = "暂无任何评价";
+                                            }
+                                            //开启侧边框
+                                            var contents = '<h3>' + scenicInfo.name + '</h3><p><i class="fa fa-map-marker" style="color:blue"></i>&nbsp;&nbsp;&nbsp;' + scenicInfo.address + '</p><p><i class="fa fa-phone" style="color:darkorange"></i> &nbsp;&nbsp;&nbsp;<b>' + scenicInfo.tel + '</b></p><p><i class="fa fa-tag" style="color:deepskyblue"></i> &nbsp;&nbsp;&nbsp;' + scenicInfo.tag + '</p><p><i class="fa fa-star" style="color:red"></i> &nbsp;&nbsp;&nbsp;' + scenicInfo.starLevel + '</p><p class="lorem">' + scenicInfo.introduction + '</p>'
+                                            contents += imgContents;
+                                            slideMenu = L.control.slideMenu(contents, { position: 'topright', menuposition: 'topright', width: '50%', height: '100%', delay: '10', icon: 'fa-chevron-left', hidden: false }).addTo(map);
+                                        }
+                                    })
+                                    .catch(function (err) {
+                                        console.log(err);
+                                    })
+                            })
+                            //markers.addLayer(marker);
+                            aroundScenicsLayer.addLayer(marker);
+                        }
+                        //map.addLayer(markers);
+                        aroundScenicsLayer.addLayer(marker);
+                        map.addLayer(aroundScenicsLayer);
+                        panelLayers.addOverlay({
+                            name: "周边景区",
+                            icon: '<i class="fa fa-map-signs"></i>',
+                            layer: aroundScenicsLayer
+                        })
+                        map.setView([parseFloat(pois[0].location.split(",")[1]), parseFloat(pois[0].location.split(",")[0])], 10)
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                    })
+            },
+            //景区周边设施查询
+            searchAroundPoi: function () {
+                console.log("景区周边设施查询");
+                var that = this;
+                // if (document.getElementsByClassName("searchable-select-item selected")[0] != undefined && this.poiWord != "") {
+                //     //获取所选景区位置
+                //     var location = document.getElementsByClassName("searchable-select-item selected")[0].dataset.location;
+                if ($("#aroundPoi.searchable-select-item.selected")[0] != undefined && this.poiWord != "") {
+                    //获取所选景区位置
+                    var location =$("#aroundPoi.searchable-select-item.selected")[0].dataset.location;
+                    //获取景区周边设施信息
+                    axios.get("https://restapi.amap.com/v3/place/around", {
+                        params: {
+                            key: "daa4e1759839a0efc584e06f2d9d106e",
+                            location: location,
+                            keywords: that.poiWord
+                        }
+                    })
+                        .then(function (res) {
+                            //console.log(res);
+                            //清除定位图层
+                            markers.clearLayers();
+                            var iconUrl = "";
+                            if (that.poiWord == "酒店") {
+                                iconUrl = "./images/jiudian.png";
+                                that.createAroundPoi(res.data.pois, poiScenics1Layer, that.poiWord, '<i class="fa fa-bed"></i>',iconUrl);
+                            } else if (that.poiWord == "饭店") {
+                                iconUrl = "./images/fandian.png";
+                                that.createAroundPoi(res.data.pois, poiScenics2Layer, that.poiWord, '<i class="fa fa-coffee"></i>',iconUrl);
+                            }
+                            else if (that.poiWord == "厕所") {
+                                iconUrl = "./images/cesuo.png";
+                                that.createAroundPoi(res.data.pois, poiScenics3Layer, that.poiWord, '<i class="fa fa-user-circle"></i>',iconUrl);
+                            }
+                            //隐藏模态框
+                            $('#poiSearch').modal('hide')
+                        })
+                        .catch(function (err) {
+                            console.log(err);
+                        })
+                } else {
+                    alert("请先选择景区和周边设施");
+                }
+            },
+            //景区周边设施点图层构建
+            createAroundPoi: function (pois, poiLayer, name, icon,iconUrl) {
+                var poiIcon = L.icon({
+                    iconUrl: iconUrl,
+                    iconSize: [32, 32], // size of the icon
+                });
+                //清除之前自身图层
+                poiLayer.clearLayers();
+                panelLayers.removeLayer(poiLayer);
+                //获得poi集合
+                //var pois = res.data.pois;
+                for (let i = 0; i < pois.length; i++) {//遍历poi集合
+                    var poi = pois[i];
+                    var latlng = poi.location.split(",");
+                    var marker = L.marker([parseFloat(latlng[1]), parseFloat(latlng[0])], { icon: poiIcon });
+                    if (poi.photos.length != 0) {
+                        marker.bindPopup('<p class="poiWordCss"><strong>名称:</strong>' + poi.name + '</p><p class="poiWordCss"><strong>联系方式:</strong>' + poi.tel + '</p><p class="poiWordCss"><strong>地址:</strong>' + poi.address + '</p><img style="max-width:100%;max-height:100%" src="' + poi.photos[0].url + '">');
+                    } else {
+                        marker.bindPopup('<p class="poiWordCss"><strong>名称:</strong>' + poi.name + '</p><p class="poiWordCss"><strong>联系方式:</strong>' + poi.tel + '</p><p class="poiWordCss"><strong>地址:</strong>' + poi.address + '</p>');
+                    }
+                    //markers.addLayer(marker);
+                    poiLayer.addLayer(marker);
+                }
+                //map.addLayer(markers);
+                map.addLayer(poiLayer);
+                panelLayers.addOverlay({    
+                    name: name,
+                    icon: icon,
+                    layer: poiLayer
+                })
+                map.setView([parseFloat(pois[0].location.split(",")[1]), parseFloat(pois[0].location.split(",")[0])], 16)
+            },
+            //打卡提交
+            clockInScenicPoint: function () {
+                var that = this;
+                var flag = checkObjProp(this.spot_check);
+                if (flag) {
+                    console.log("打卡");
+                    axios.post("http://120.79.198.96:8864/map/saveSpotCheck", {
+                        spotid: that.spot_check.spotid_cur,
+                        sid: that.spot_check.sid_cur,
+                        lat: that.spot_check.lat,
+                        lng: that.spot_check.lng,
+                        pictureUrl: that.spot_check.pictureUrl,
+                        address: that.spot_check.address,
+                        thoughts: that.spot_check.thoughts,
+                    })
+                        .then(function (res) {
+                            //console.log(res);
+                            if (res.data.code == "200") {
+                                alert("打卡成功!");
+                                var spotIcon = L.icon({
+                                    iconUrl: './images/daka.png',
+                                    iconSize: [32, 32], // size of the icon
+                                });
+                                //地图上标记打卡点
+                                //弹出框内容
+                                var content = '<div class="media"><div class="media-left"><img style="width:51px;height:90px" src="' + that.spot_check.pictureUrl + '"></div><div class="media-body">' + that.spot_check.thoughts + '</div></div>';
+                                var marker = L.marker([that.spot_check.lat, that.spot_check.lng], { icon: spotIcon });
+                                marker.bindPopup(content, { direction: 'top' })
+                                spotmarkers.addLayer(marker);
+                                //重置对象属性
+                                that.spot_check.spotid_cur = "";
+                                that.spot_check.sid_cur = "";
+                                that.spot_check.address = "";
+                                that.spot_check.lat = "";
+                                that.spot_check.lng = "";
+                                that.spot_check.pictureUrl = "";
+                                that.spot_check.thoughts = "";
+                                that.flag_img = true;
+                                $('#clockIn').modal('hide')
+                            }
+                        })
+                        .catch(function (err) {
+                            console.log(err);
+                        })
+                } else {
+                    alert("请填写完打卡信息再提交")
+                }
+
+            },
+
+            //初始化景区信息
+            initScenicInfo: function () {
+                var that = this;
+                axios.get("http://120.79.198.96:8864/map/getAllScenicInfo")
+                    .then(function (res) {
+                        //console.log(res);
+                        if (res.data.code == "200") {
+                            that.scenicInfo = res.data.data;
+                        }
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                    })
+            },
+            //根据景区获取对应景点
+            choseScenicPoint: function () {
+                var that = this;
+                if (this.spot_check.sid_cur != "") {
+                    axios.get("http://120.79.198.96:8864/map/getScenicPointInfoBySid", {
+                        params: {
+                            sid: that.spot_check.sid_cur
+                        }
+                    })
+                        .then(function (res) {
+                            //console.log(res);
+                            if (res.data.code == "200") {
+                                that.scenicPointInfo = res.data.data
+                            } else {
+                                alert("该景区管理员未标记任何景点");
+                                that.scenicPointInfo = [];
+                            }
+                        })
+                        .catch(function (err) {
+                            console.log(err);
+                        })
+                }
+            },
+            //景点图片上传
+            uploadImg: function (e) {
+                var that = this;
+                //取出文件
+                var file = e.target.files[0];
+                let formData = new FormData();
+                formData.append("file", file);
+                axios.post('http://120.79.198.96:8864/common/uploadImg', formData)
+                    .then(function (res) {
+                        //console.log(res);
+                        if (res.data.code == "200") {//图片上传成功
+                            that.spot_check.pictureUrl = res.data.data;
+                            that.flag_img = false;
+                        } else {
+                            alert("图片上传失败");
+                        }
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                    });
+            },
+            //导航方式选择
+            choseNavigationWay(id){
+                //清除原先样式
+                
+                $('#Bywalk').removeClass()
+                $('#Bybus').removeClass()
+                $('#Bycar').removeClass()
+                $('#'+id).addClass('active')
+                var lastFrom = $("#navigation-from.searchable-select-item.selected")[0].dataset.location.split(",");
+                var lastTo = $("#navigation-to.searchable-select-item.selected")[0].dataset.location.split(",");
+                fromLat= parseFloat(lastFrom[1]).toFixed(5)
+                fromLon = parseFloat(lastFrom[0]).toFixed(5)
+                toLat = parseFloat(lastTo[1]).toFixed(5)
+                toLon = parseFloat(lastTo[0]).toFixed(5)
+                lastFrom = [fromLat,fromLon]
+                lastTo = [toLat,toLon]
+                route.getRoute(id,lastFrom,lastTo)
+                //console.log(lastFrom,lastTo)
+                //panelLayers.removeLayer(route.routeLayer);
+                // if(id=="Bywalk"){
+                //     panelLayers.addOverlay({
+                //         name:'步行',
+                //         icon:'<i class="fa fa-blind"></i>',
+                //         layer:route.routeLayer
+                //     })
+                // }
+                // else if(id=="Bybus"){
+                //     panelLayers.addOverlay({
+                //         name:'公交',
+                //         icon:'<i class="fa fa-bus"></i>',
+                //         layer:route.routeLayer
+                //     })
+                // }
+                // else if(id=="Bycar"){
+                //     panelLayers.addOverlay({
+                //         name:'驾车',
+                //         icon:'<i class="fa fa-car"></i>',
+                //         layer:route.routeLayer
+                //     })
+                // }
+                
+                
+               
+
+            },
+            //异步搜索
+            searchByAjax(text, callResponse) {
+                var datas = []
+                return axios.get("https://restapi.amap.com/v3/assistant/inputtips", {
+                    params: {
+                        key: "daa4e1759839a0efc584e06f2d9d106e",
+                        keywords: text,
+                        location: returnCitySN.cip,
+                        type: "110000|110100|110101|110102|110103|110104|110105|110106|110200|110201|110202|110203|110204|110205|110206|110207|110208|110209",
+                        datatype: "poi"
+                    }
+                })
+                    .then(function (res) {
+                        //console.log(res);
+                        res.data.tips.map(function (item) {
+                            //console.log(item);
+                            //构造数据格式
+                            //[{"loc":[41.57573,13.002411],"title":"black"},{"loc":[41.807149,13.162994],"title":"blue"}]
+                            var data = {};
+                            if (item.location.length != 0) {
+                                var location = item.location.split(",");
+                                var loc = [];
+                                loc[0] = parseFloat(location[1]);
+                                loc[1] = parseFloat(location[0]);
+                                //console.log(loc);
+                                data.loc = loc;
+                                if (item.district != '') {
+                                    data.title = item.name + "(" + item.district + ")";
+                                } else {
+                                    data.title = item.name;
+                                }
+                                data.id = item.id;
+                                data.adcode = item.adcode
+                                datas.push(data);
+                            }
+                        })
+                        //console.log(datas);
+                        callResponse(datas);
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                    })
+            }
+
+        },
+        //挂载时加载
+        mounted: function () {
+            var that = this;
+            //加载高德底图
+            const GeoDeBaseMap = L.tileLayer.chinaProvider('GaoDe.Normal.Map', {
+                maxZoom: 18,
+                minZoom: 0
+            });
+            //加载高德影像
+            const GeoDeSatellite = L.tileLayer.chinaProvider('GaoDe.Satellite.Map', {
+                maxZoom: 18,
+                minZoom: 0
+            });
+            // var normal = L.layerGroup([GeoDeBaseMap]);
+            map = L.map("map", {
+                center: [28.19792655722615, 112.972412109375],
+                zoom: 5,
+                layers: [GeoDeBaseMap]
+            })
+            //搜索插件
+            map.addControl(new L.Control.Search({ sourceData: this.searchByAjax, text: 'Color...', markerLocation: true, zoom: 14 }));
+            //侧边框插件
+            slideMenu = L.control.slideMenu('<p>test</p>', { position: 'topright', menuposition: 'topright', width: '50%', height: '100%', delay: '10', icon: 'fa-chevron-left', hidden: true }).addTo(map);
+
+
+            //自定义功能按钮插件 右侧按钮组
+            L.control.custom({
+                position: 'topright',
+                content: '<button id="location" type="button" class="btn btn-default" >' +
+                    '    <i id="location" class="fa fa-location-arrow"></i>' +
+                    '</button>' +
+                    '<button type="button" class="btn btn-info" data-toggle="modal" data-target="#poiSearch">' +
+                    '    <i class="fa fa-circle"></i>' +
+                    '</button>' +
+                    '<button  id="checkPoint" type="button" class="btn btn-primary" >' +
+                    '    <i id="checkPoint" class="fa fa-map-marker"></i>' +
+                    '</button>' +
+                    '<button id="storyMap" type="button" class="btn btn-success">' +
+                    '    <i id="storyMap" class="fa fa-map"></i>' +
+                    '</button>',
+                classes: 'btn-group-vertical btn-group-sm',
+                style:
+                {
+                    margin: '10px',
+                    padding: '0px 0 0 0',
+                    cursor: 'pointer'
+                },
+                datas:
+                {
+                    'foo': 'bar',
+                },
+                events:
+                {
+                    click: function (data) {
+                        //console.log('wrapper div element clicked');
+                        //console.log(data);
+                        if (data.target.id == "location") { //点击定位按钮
+                            that.location();
+                        }
+                        else if (data.target.id == "checkPoint") { //点击打卡
+                            that.flag_point = !that.flag_point;
+
+                            if (that.flag_point) {
+                                alert("进入打卡状态");
+                                panelLayers.addOverlay({
+									name:"打卡点",
+									icon:'<i class="fa fa-lemon-o"></i>',
+									layer:spotmarkers
+								})
+                                map.addLayer(spotmarkers);
+                                //恢复图片上传
+                                that.flag_img = true;
+                                var eventMap = map.on("click", function (event) {
+                                    //console.log(event);
+                                    //获取经度纬度
+                                    that.spot_check.lat = event.latlng.lat;
+                                    that.spot_check.lng = event.latlng.lng;
+                                    //逆地址解析
+                                    axios.get("https://restapi.amap.com/v3/geocode/regeo", {
+                                        params: {
+                                            key: "daa4e1759839a0efc584e06f2d9d106e",
+                                            location: event.latlng.lng + "," + event.latlng.lat
+                                        }
+                                    })
+                                        .then(function (res) {
+                                            //console.log(res);
+                                            if (res.data.info == "OK" && res.data.status == "1") {
+                                                that.spot_check.address = res.data.regeocode.formatted_address;
+                                            }
+                                        })
+                                        .catch(function (err) {
+                                            console.log(err);
+                                        })
+                                    $('#clockIn').modal('show')
+                                })
+                            } else {
+                                alert("退出打卡状态");
+                                //地图上移出打卡点图层
+                                map.removeLayer(spotmarkers);
+                                //取消地图点击事件
+                                map.off("click", eventMap);
+                                //图层控制组移出打卡点图层
+                                panelLayers.removeLayer(spotmarkers);
+                            }
+                        }
+                        else if (data.target.id == "storyMap") { //点击故事地图
+
+                            alert("进入故事地图");
+                            window.open("./storymap.html");
+                        }
+                    }
+                }
+            })
+                .addTo(map);
+            //底图组
+            var baseLayers = [
+                {
+                    name: "高德地图",
+                    layer: GeoDeBaseMap
+                },
+                {
+                    name: "高德影像",
+                    layer: GeoDeSatellite
+                }
+            ];
+            //图层控制插件
+            panelLayers = new L.Control.PanelLayers(baseLayers);
+            map.addControl(panelLayers);
+
+            //导航插件
+            route = new L.Routing(map,{transform:'GCJ02'});
+
+
+            //执行定位
+            this.location();
+
+            //天气查询
+            this.weather();
+
+            //初始化下拉框
+            $('#siteRouteChoseFrom').searchableSelect({id:'navigation-from'});
+            $('#siteRouteChoseTo').searchableSelect({id:'navigation-to'});
+            $('#siteChose').searchableSelect({id:'aroundPoi'});
+
+            //初始化景区信息
+            this.initScenicInfo();
+
+        }
+    })
+</script>
+
+
+</html>

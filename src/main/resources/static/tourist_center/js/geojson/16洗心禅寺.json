@@ -1,0 +1,245 @@
+{
+	"status": "1",
+	"data": {
+		"base": {
+			"poi_tag": "",
+			"code": "430112",
+			"importance_vip_flag": 0,
+			"city_adcode": "430100",
+			"telephone": "0731-88382000",
+			"new_type": "110205",
+			"new_keytype": "风景名胜;风景名胜;寺庙道观",
+			"checked": "2",
+			"title": "风景名胜",
+			"cre_flag": 0,
+			"std_t_tag_0_v": "寺庙",
+			"navi_geometry": "112.85718,28.279109",
+			"classify": "风景名胜",
+			"business": "scenic",
+			"sp_mark": 0,
+			"shop_info": {
+				"claim": 2
+			},
+			"poi_tag_has_t_tag": 0,
+			"pixelx": "218373098",
+			"pixely": "112218158",
+			"city_name": "长沙市",
+			"poiid": "B02DB06906",
+			"distance": 0,
+			"name": "洗心禅寺",
+			"geodata": {
+				"aoi": [{
+					"name": "洗心禅寺",
+					"mainpoi": "B02DB06906",
+					"area": 512392.72327
+				}]
+			},
+			"end_poi_extension": "0",
+			"y": "28.280145",
+			"x": "112.861146",
+			"address": "长沙市望城区洗心路",
+			"tag": "风景名胜;风景名胜;寺庙道观",
+			"picLen": 5
+		},
+		"spec": {
+			"mining_shape": {
+				"aoiid": "G00AOI0000068O73",
+				"center": "112.861146,28.280145",
+				"area": "512392.723270",
+				"sp_type": "3310",
+				"shape": "112.857692,28.276221;112.858851,28.275531;112.86031,28.275639;112.862048,28.276053;112.862477,28.276277;112.862874,28.276637;112.863035,28.276854;112.863206,28.27692;112.864354,28.277185;112.864741,28.277373;112.864998,28.277525;112.865148,28.277808;112.865309,28.278564;112.86561,28.279065;112.865996,28.279367;112.866189,28.279584;112.866093,28.279811;112.865449,28.280189;112.864987,28.280435;112.864687,28.280539;112.864676,28.28085;112.86459,28.281172;112.864075,28.281739;112.863797,28.282069;112.863442,28.282372;112.863131,28.282504;112.862627,28.28274;112.862595,28.28274;112.862316,28.283798;112.862219,28.284894;112.862531,28.285471;112.862595,28.285858;112.862445,28.286047;112.859805,28.28633;112.859419,28.285234;112.859231,28.284483;112.859017,28.282901;112.858749,28.280567;112.858604,28.280165;112.858367,28.279858;112.858204,28.279736;112.857955,28.279636;112.857638,28.279542;112.857295,28.279447;112.857173,28.279451;112.857048,28.279462;112.856549,28.27787;112.857032,28.277707;112.857188,28.277738;112.857338,28.277704;112.857692,28.276221",
+				"level": 16,
+				"type": "0"
+			},
+			"sp_pic": []
+		},
+		"pic_cover": {
+			"url": "http://store.is.autonavi.com/showpic/c4bafc049ac6cf95a78538f8097841d5"
+		},
+		"pic": [{
+			"weight": 1001,
+			"srcheight": 10000,
+			"url": "http://store.is.autonavi.com/showpic/c4bafc049ac6cf95a78538f8097841d5?type=pic",
+			"text_sensibility": "2",
+			"iscover": 1,
+			"srcwidth": 10000
+		}, {
+			"iscover": "1",
+			"srcheight": 440,
+			"url": "http://store.is.autonavi.com/showpic/fc3ae9e4d14e741250a66eb3a9a8b69e?type=pic",
+			"text_sensibility": "2",
+			"biz": "scenic",
+			"pic_id": "fc3ae9e4d14e741250a66eb3a9a8b69e",
+			"srcwidth": 665,
+			"fetch_type": "1"
+		}, {
+			"iscover": 0,
+			"srcheight": 700,
+			"url": "http://store.is.autonavi.com/showpic/aace866cac553ba7aa8f0c2c4c0a6d9a?type=pic",
+			"text_sensibility": "2",
+			"biz": "scenic",
+			"pic_id": "aace866cac553ba7aa8f0c2c4c0a6d9a",
+			"srcwidth": 700,
+			"fetch_type": "1"
+		}, {
+			"iscover": 0,
+			"srcheight": 700,
+			"url": "http://store.is.autonavi.com/showpic/90a096ee8744708ad2f211315f428505?type=pic",
+			"text_sensibility": "2",
+			"biz": "scenic",
+			"pic_id": "90a096ee8744708ad2f211315f428505",
+			"srcwidth": 700,
+			"fetch_type": "1"
+		}],
+		"scenic": {
+			"s_duration": "1小时",
+			"src_type_mix": "dp_api;scenic_bk_api;scenic_ctrip_grab;scenic_lianjing_api;sm_mfw_info",
+			"have_in_spots": 0,
+			"src_id": "1675154",
+			"src_star": "4.3",
+			"business": "scenic",
+			"season": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+			"price": "0.0",
+			"have_rec_food": 0,
+			"rec_sports": [],
+			"intro": "洗心禅寺位于湖南省望城区黄金街道,西北8公里处之高顶山麓。穿过长沙高新开发区之后不远就到了。寺庙依山而建,感觉占地面积很大,建筑很宏伟。南毗毓秀麓山,北临浩瀚洞庭,风景秀丽,环境洁雅。寺院整个建筑群融南北风格于一体,红墙金瓦,翘角飞檐;殿内满堂缅白玉佛像,玉质上乘,雕刻精美,古朴神韵;法相庄严,其中三世佛每尊都是用高5.8米,重30余吨的整块玉石雕刻而成,更是极为罕有,不失为该寺的亮丽瑰宝。寺宇前方占地四十二亩,直径达一百零八米,能容纳上万人的洗心广场,恢宏别致,蔚为壮观。",
+			"season_desc": "全年",
+			"info_weburl": "http://www.dianping.com/shop/5491472",
+			"src_type": "cms_deep_merge"
+		},
+		"deep": {
+			"s_duration": "1小时",
+			"src_type_mix": "dp_api;scenic_bk_api;scenic_ctrip_grab;scenic_lianjing_api;sm_mfw_info",
+			"have_in_spots": 0,
+			"src_id": "1675154",
+			"src_star": "4.3",
+			"business": "scenic",
+			"season": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+			"price": "0.0",
+			"have_rec_food": 0,
+			"rec_sports": [],
+			"intro": "洗心禅寺位于湖南省望城区黄金街道,西北8公里处之高顶山麓。穿过长沙高新开发区之后不远就到了。寺庙依山而建,感觉占地面积很大,建筑很宏伟。南毗毓秀麓山,北临浩瀚洞庭,风景秀丽,环境洁雅。寺院整个建筑群融南北风格于一体,红墙金瓦,翘角飞檐;殿内满堂缅白玉佛像,玉质上乘,雕刻精美,古朴神韵;法相庄严,其中三世佛每尊都是用高5.8米,重30余吨的整块玉石雕刻而成,更是极为罕有,不失为该寺的亮丽瑰宝。寺宇前方占地四十二亩,直径达一百零八米,能容纳上万人的洗心广场,恢宏别致,蔚为壮观。",
+			"season_desc": "全年",
+			"info_weburl": "http://www.dianping.com/shop/5491472",
+			"src_type": "cms_deep_merge"
+		},
+		"rti": {
+			"review_entrance": 1,
+			"review_count": 69,
+			"scenic_guide": {
+				"line_count": 0,
+				"line_poi_count": 0,
+				"max_poi_count": 0,
+				"is_txt_tts": 0
+			},
+			"review_labels": [],
+			"review_summary": "",
+			"has_discount_flag": 0
+		},
+		"review": {
+			"comment": [{
+				"quality_flag": 72,
+				"author_profileurl": "http://store.is.autonavi.com/showpic/ca0f297b8899be9b07024260e885f7f7",
+				"review_wapurl": "http://m.dianping.com/shop/review/560437956",
+				"labels": [],
+				"src_name": "大众点评",
+				"review_appurl": {
+					"ios_appurl": "",
+					"android_appurl": ""
+				},
+				"gold_type": "23",
+				"pic_info": [{
+					"url": "http://store.is.autonavi.com/showpic/3b051a615292be293a4d46b540cf032a",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/b1bf5b08461d8c7ff9d9d5b7940414df",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/9f07bcc5f5dabea815149928a9888942",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/1f91c96cb207fbe654f6d51dad2008b7",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/0d9f955a3d6e1b423a88427ad7b86f13",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/e69955ebbd3d578530f292647742e259",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/4c2bc7397617ddf6bd6812e352a27148",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/a5dc1458e56e2f81dcf12b7dc90eeb65",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/cd86d9b00cb2c600f6c066b8a520006d",
+					"source": "图片来源：大众点评"
+				}],
+				"author": "洞庭一郎",
+				"review": "洗心禅寺在长沙望城雷锋大道那边，依山而建，洗心禅寺不卖门票，只有寺外一些堂客们缠着你买她的香烛，寺庙门前有一大广场，也是香客烧香的地方，我们去时正遇一场倾盆暴雨，积水把鞋都湿透了，真是洗心又洗身，寺里有许多戴眼镜斯斯文文出家的青年，年纪轻轻就遁入空门，实在感叹生活的不易",
+				"score": 5,
+				"recommend": "",
+				"src_type": "dp_mapi",
+				"review_id": "560437956",
+				"review_weburl": "",
+				"gaode_coin": 20,
+				"like_num": "0",
+				"aos_tag_score": 39.199999999999996,
+				"high_quality": 0,
+				"gold_num": 20,
+				"time": "2019-06-09",
+				"author_id": ""
+			}, {
+				"quality_flag": 72,
+				"author_profileurl": "http://store.is.autonavi.com/showpic/861c814f0dabe50bf88ffccc52098d13",
+				"review_wapurl": "http://m.dianping.com/shop/review/546304269",
+				"labels": [],
+				"src_name": "大众点评",
+				"review_appurl": {
+					"ios_appurl": "",
+					"android_appurl": ""
+				},
+				"gold_type": "23",
+				"pic_info": [{
+					"url": "http://store.is.autonavi.com/showpic/7f600d2f23fbe54fc8e4ec7d70d68e90",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/ce8ee3e94515c2345087d7af88bab04e",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/f8c622fef7f09c45fc638f65f5c0548c",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/019a494521374b8031be66e990a0df45",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/6acff84db0d825fab4e2be810bd5ff2e",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/43b1277ad1ac66e386ae667de2bc4223",
+					"source": "图片来源：大众点评"
+				}],
+				"author": "Seo",
+				"review": "相比于处于闹市区的开福寺 我更喜欢山脚下的洗心禅寺[双手合十]\n洗心禅寺在望城 离长沙医学院比较近 有直达公交 但公交车并非直达寺院门口  想去寺院还需要步行前往\n寺院外面广场对面有个千手观音壁 下面池子里有很多锦鲤游来游去 寺院周围的池水连接小湖泊 锦鲤 鸭子遨游其中\n寺院内部恢弘大气 大雄宝殿 藏经阁 佛堂 僧人住所等应有尽有 \n寺院立于山下 清新自然 甚是安静 人来了就自然能静下来 如处于幽幽林间 又有庄严肃穆之感\n洗心禅寺 名副其实！",
+				"score": 5,
+				"recommend": "",
+				"src_type": "dp_mapi",
+				"review_id": "546304269",
+				"review_weburl": "",
+				"gaode_coin": 20,
+				"like_num": "0",
+				"aos_tag_score": 22.400000000000002,
+				"high_quality": 0,
+				"gold_num": 20,
+				"time": "2019-05-13",
+				"author_id": ""
+			}]
+		},
+		"score": {
+			"总分": "4.3"
+		},
+		"src_info": [],
+		"share_url": "http://wb.amap.com/?p=B02DB06906%2C28.280145%2C112.861146%2C%E6%B4%97%E5%BF%83%E7%A6%85%E5%AF%BA%2C%E9%95%BF%E6%B2%99%E5%B8%82%E6%9C%9B%E5%9F%8E%E5%8C%BA%E6%B4%97%E5%BF%83%E8%B7%AF"
+	}
+}

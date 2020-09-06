@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>景区打卡分析</title>
+    <!--leaflet-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+        integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+        crossorigin=""></script>
+    <!--vue-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!--axios-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+     <!--jquery-->
+     <script src="https://cdn.bootcss.com/jquery/1.9.1/jquery.js"></script>
+     <!--Bootstrap3-->
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+         integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+         crossorigin="anonymous"></script>
+    <!--底图插件1-->
+    <script src="./js/common/leaflet.ChineseTmsProviders.js"></script>
+    <!--底图插件2-->
+    <!-- <script src="./js/common/esri-leaflet.js"></script> -->
+    <!--响应式侧边栏插件-->
+    <script src="./js/common/L.Control.Sidebar.js"></script>
+    <link rel="stylesheet" href="./css/common/L.Control.Sidebar.css">
+    <!--聚散点插件-->
+    <link rel="stylesheet" href="./css/map3/MarkerCluster.css" />
+	<link rel="stylesheet" href="./css/map3/MarkerCluster.Default.css" />
+    <script src="./js/map3/leaflet.markercluster-src.js"></script>
+    <!--测试数据-->
+    <!-- <script src="./data/yls_encryption00.js"></script> -->
+    <!--echarts-->
+    <script src="./js/common/echarts.js"></script>
+    <!--ip定位，搜狐-->
+    <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+    <!--工具类-->
+    <script src="../../js/utils.js"></script>
+    <style>
+        #app-map3 {
+            height: 100vh;
+            width: 100%;
+        }
+
+        #map {
+            height: 100%;
+            width: 100%
+        }
+
+        .table {
+            width: 390px;
+            height: 394px;
+            margin-top: 50%;
+            padding: 10px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app-map3">
+        <!--侧边栏-->
+        <div id="sidebar">
+            <h2 style="text-align: center">景点打卡分析</h2>
+            <!--图表容器-->
+            <div id="table1" class="table"></div>
+        </div>
+        <!--侧边栏end-->
+        <div id="map"></div>
+    </div>
+</body>
+<script type="text/javascript">
+    var sidebar;    //侧边框
+    var map;        //地图
+    var markers = L.markerClusterGroup(); //聚散图层
+    var app = new Vue({
+        el: "#app-map3",
+        data: function() {
+            return {
+                id: "", //景区id
+                dataName:[],
+                dataValue:[]
+            }
+        },
+        methods: {
+            //景点打卡次数统计图
+            createSpotHistogram: function (dataName,dataValue) {
+                // 基于准备好的dom，初始化echarts实例
+                var myChart = echarts.init(document.getElementById("table1"));
+                // 指定图表的配置项和数据
+                var option = {
+                    color: ['#3398DB'],
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                        }
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: [
+                        {
+                            type: 'category',
+                            axisLabel: {
+                                interval: 0,
+                                rotate: 90
+                            },
+                            data: dataName,
+                            axisTick: {
+                                alignWithLabel: true
+                            }
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value'
+                        }
+                    ],
+                    series: [
+                        {
+                            name: '打卡量',
+                            type: 'bar',
+                            barWidth: '60%',
+                            data: dataValue
+                        }
+                    ]
+                };
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+            }
+        },
+        //挂载时加载
+        mounted: function () {
+            var that = this;
+            //加载高德底图
+            const GeoDeBaseMap = L.tileLayer.chinaProvider('GaoDe.Normal.Map', {
+                maxZoom: 18,
+                minZoom: 0
+            });
+
+            var normal = L.layerGroup([GeoDeBaseMap]);
+            map = L.map("map", {
+                center: [28.19777526841951, 113.00039291381837],
+                zoom: 12,
+                layers: [normal]
+            });
+
+            //侧边栏插件
+            sidebar = L.control.sidebar('sidebar', {
+                closeButton: true,
+                position: 'right'
+            });
+            map.addControl(sidebar);
+           
+
+            var sid = getQueryVariable("sid")
+            if (sid != "") {
+                //根据sid查询景区信息
+                axios.get("http://120.79.198.96:8864/map/getScenicInfoBySid", {
+                    params: {
+                        sid: sid
+                    }
+                })
+                    .then(function (res) {//景区位置信息查询成功
+                        //console.log(res);
+                        if (res.data.code == "200") {
+                            var location = res.data.data.location.split(",");
+                            //设置地图位置和缩放级别
+                            map.setView([parseFloat(location[1]), parseFloat(location[0])], 15);
+                            //侧边栏弹出
+                            that.createSpotHistogram();
+                            sidebar.show();
+                        }
+                        //axios处理地狱回调 查询景区打卡点统计情况
+                        return axios.get("http://120.79.198.96:8864/map/generateSpotCheckStatistics",{
+                            params:{
+                                sid:sid
+                            }
+                        })
+                        
+                    })
+                    .then(function(res){
+                        //console.log(res);
+                        if(res.data.code=="200"){ //景区打卡统计查询成功
+                            var spotStatistics = res.data.data;
+                            for(let i =0;i<spotStatistics.length;i++){ //数据统计
+                                that.dataName[i] = spotStatistics[i].spoName;
+                                that.dataValue[i] = spotStatistics[i].count;
+                            }
+                            //景区打卡分布柱状图生成
+                            that.createSpotHistogram(that.dataName,that.dataValue);
+                            //axios处理地狱回调 查询景区打卡
+                            return axios.get("http://120.79.198.96:8864/map/getSpotCheckBySid",{
+                                params:{
+                                    sid:sid
+                                }
+                            })
+                        }
+                    })
+                    .then(function(res){
+                        console.log(res);
+                        if(res.data.code=="200"){//景区打卡点查询成功
+                            var spotList = res.data.data;
+                            for(let i = 0;i<spotList.length;i++){
+                                var spot = spotList[i];
+                                //弹出框内容
+                                var content = '<div class="media"><div class="media-left"><img style="width:51px;height:90px" src="' + spot.pictureUrl + '"></div><div class="media-body"><h4 class="media-heading">' + spot.spoName + '</h4>' + spot.thoughts + '</div></div>';
+                                var marker = L.marker([spot.lat,spot.lng]);
+                                marker.bindPopup(content);
+                                markers.addLayer(marker);
+                            }
+                            map.addLayer(markers);
+                        }
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                    })
+            }
+
+        }
+    })
+
+</script>
+
+</html>

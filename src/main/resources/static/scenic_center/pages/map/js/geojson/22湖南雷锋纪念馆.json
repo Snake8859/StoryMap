@@ -1,0 +1,260 @@
+{
+	"status": "1",
+	"data": {
+		"base": {
+			"poi_tag": "",
+			"code": "430112",
+			"importance_vip_flag": 0,
+			"city_adcode": "430100",
+			"telephone": "0731-88165506;12301",
+			"new_type": "110202",
+			"new_keytype": "风景名胜;风景名胜;国家级景点",
+			"alias_name": "雷锋纪念馆",
+			"checked": "1",
+			"title": "风景名胜",
+			"cre_flag": 0,
+			"std_t_tag_0_v": "4A景区",
+			"navi_geometry": "112.843494,28.203316",
+			"classify": "风景名胜",
+			"business": "scenic",
+			"sp_mark": 0,
+			"shop_info": {
+				"claim": 2
+			},
+			"poi_tag_has_t_tag": 0,
+			"pixelx": "218361130",
+			"pixely": "112282717",
+			"city_name": "长沙市",
+			"poiid": "B02DB05TQB",
+			"distance": 0,
+			"name": "湖南雷锋纪念馆",
+			"geodata": {
+				"aoi": [{
+					"name": "湖南雷锋纪念馆",
+					"mainpoi": "B02DB05TQB",
+					"area": 66325.290525
+				}]
+			},
+			"end_poi_extension": "0",
+			"y": "28.203866",
+			"x": "112.845096",
+			"address": "长沙市望城区雷锋镇正兴路42号",
+			"tag": "风景名胜;风景名胜;国家级景点",
+			"picLen": 5
+		},
+		"spec": {
+			"mining_shape": {
+				"aoiid": "G00AOI000001Y2TY",
+				"center": "112.845096,28.203866",
+				"area": "68605.299476",
+				"sp_type": "3310",
+				"shape": "112.844584,28.20572;112.84586,28.20596;112.845891,28.205959;112.845908,28.205954;112.845927,28.205941;112.845972,28.205886;112.846028,28.205789;112.846079,28.205582;112.846092,28.20555;112.846145,28.205467;112.846225,28.205375;112.846237,28.20535;112.84624,28.205337;112.84624,28.20531;112.846242,28.205249;112.846036,28.202484;112.846043,28.202468;112.846057,28.202454;112.846087,28.202443;112.846095,28.202436;112.846103,28.202422;112.846103,28.202397;112.846076,28.202203;112.846068,28.202191;112.846053,28.202182;112.845909,28.20217;112.844402,28.202018;112.84438,28.202018;112.84436,28.202019;112.844339,28.202032;112.844317,28.202053;112.843956,28.20254;112.843704,28.20299;112.843421,28.203534;112.843415,28.203586;112.843425,28.203618;112.84344,28.203631;112.843457,28.20364;112.843481,28.203643;112.843631,28.203644;112.843672,28.203652;112.843725,28.203675;112.844266,28.20388;112.844419,28.204253;112.844315,28.204568;112.844315,28.204601;112.844327,28.20463;112.844354,28.204669;112.844364,28.20469;112.844381,28.204758;112.844393,28.205228;112.844401,28.205291;112.844449,28.205553;112.844479,28.20562;112.844504,28.20566;112.844534,28.205699;112.844584,28.20572",
+				"level": 17,
+				"type": "0"
+			},
+			"sp_pic": []
+		},
+		"pic_cover": {
+			"url": "http://store.is.autonavi.com/showpic/9329b3e9e25e2049fe6f23085be012da"
+		},
+		"pic": [{
+			"weight": 1001,
+			"srcheight": 10000,
+			"url": "http://store.is.autonavi.com/showpic/9329b3e9e25e2049fe6f23085be012da?type=pic",
+			"text_sensibility": "2",
+			"iscover": 1,
+			"srcwidth": 10000
+		}, {
+			"url": "http://store.is.autonavi.com/showpic/e842f7370e900aec8dc10be356585b4b?type=pic",
+			"text_sensibility": "2",
+			"weight": 998,
+			"title": "雷锋纪念馆"
+		}, {
+			"iscover": "1",
+			"srcheight": 440,
+			"url": "http://store.is.autonavi.com/showpic/56d96ebe511b12c3f2db482d5a72bab4?type=pic",
+			"text_sensibility": "2",
+			"biz": "scenic",
+			"pic_id": "56d96ebe511b12c3f2db482d5a72bab4",
+			"srcwidth": 665,
+			"fetch_type": "1"
+		}, {
+			"iscover": "1",
+			"srcheight": 440,
+			"url": "http://store.is.autonavi.com/showpic/93e96a1b45ae847a695e7063829a44e2?type=pic",
+			"text_sensibility": "2",
+			"biz": "scenic",
+			"pic_id": "93e96a1b45ae847a695e7063829a44e2",
+			"srcwidth": 665,
+			"fetch_type": "1"
+		}],
+		"scenic": {
+			"s_duration": "约2-3小时",
+			"src_type_mix": "cms_deep_fix;dp_mapi;scenic_bk_api;scenic_lianjing_api;scenic_rlt_info;scenic_xrkj_info;sm_mfw_info",
+			"have_in_spots": 0,
+			"src_id": "B02DB05TQB",
+			"src_star": "5.0",
+			"business": "scenic",
+			"level": "4A景区",
+			"season": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+			"price": "0.00",
+			"have_rec_food": 0,
+			"rec_sports": [],
+			"intro": "1940年12月18日,雷锋出生在湖南望城县一个贫苦农民家庭。座落在此的湖南雷锋纪念馆是中央、省、市三级爱国主义教育基地和全国颇具影响的精神文明建设阵地。雷锋故居原为地主谭四滚子庄屋,因雷锋祖辈佃种谭家的田而住在谭家的庄屋内。庄屋原有房屋两进12间,三面环山,西面为塘。1940年12月18日至1956年11月,雷锋在此生活了16年。1958年故居房屋因年久失修被拆,后由雷锋堂叔雷光明在原址重建了3间茅屋。1993年修复对外开放,今正房陈放雷锋祖孙三代用过的两张床、1张大柜、1张书桌和几条凳子。改扩建后雷锋纪念馆总面积达9.4万㎡,雷锋塑像广场十分宽敞,包括可容纳400多人的多功能影视报告厅、军事模型展厅、图书阅览室等。",
+			"heat_map": "1",
+			"season_desc": "全年",
+			"src_type": "cms_deep_merge"
+		},
+		"deep": {
+			"s_duration": "约2-3小时",
+			"src_type_mix": "cms_deep_fix;dp_mapi;scenic_bk_api;scenic_lianjing_api;scenic_rlt_info;scenic_xrkj_info;sm_mfw_info",
+			"have_in_spots": 0,
+			"src_id": "B02DB05TQB",
+			"src_star": "5.0",
+			"business": "scenic",
+			"level": "4A景区",
+			"season": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+			"price": "0.00",
+			"have_rec_food": 0,
+			"rec_sports": [],
+			"intro": "1940年12月18日,雷锋出生在湖南望城县一个贫苦农民家庭。座落在此的湖南雷锋纪念馆是中央、省、市三级爱国主义教育基地和全国颇具影响的精神文明建设阵地。雷锋故居原为地主谭四滚子庄屋,因雷锋祖辈佃种谭家的田而住在谭家的庄屋内。庄屋原有房屋两进12间,三面环山,西面为塘。1940年12月18日至1956年11月,雷锋在此生活了16年。1958年故居房屋因年久失修被拆,后由雷锋堂叔雷光明在原址重建了3间茅屋。1993年修复对外开放,今正房陈放雷锋祖孙三代用过的两张床、1张大柜、1张书桌和几条凳子。改扩建后雷锋纪念馆总面积达9.4万㎡,雷锋塑像广场十分宽敞,包括可容纳400多人的多功能影视报告厅、军事模型展厅、图书阅览室等。",
+			"heat_map": "1",
+			"season_desc": "全年",
+			"src_type": "cms_deep_merge"
+		},
+		"rti": {
+			"review_count": 179,
+			"review_entrance": 1,
+			"scenic_guide": {
+				"line_count": 0,
+				"line_poi_count": 0,
+				"max_poi_count": 0,
+				"is_txt_tts": 0
+			},
+			"review_labels": [],
+			"review_summary": "",
+			"has_discount_flag": 0
+		},
+		"review": {
+			"comment": [{
+				"quality_flag": 48,
+				"author_profileurl": "http://store.is.autonavi.com/showpic/2a50ec48c8cfcb830d5891f2a68b660c",
+				"review_wapurl": "http://m.dianping.com/shop/review/600771557",
+				"labels": [],
+				"src_name": "大众点评",
+				"review_appurl": {
+					"ios_appurl": "",
+					"android_appurl": ""
+				},
+				"gold_type": "23",
+				"pic_info": [{
+					"url": "http://store.is.autonavi.com/showpic/599b280ec6a649bb1389fcbd9b8a6200",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/1d9c8cf400a7c7e0167f003ae34f2bcd",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/8c9b355fded971e938f670d7804b4cff",
+					"source": "图片来源：大众点评"
+				}],
+				"author": "肥皂",
+				"review": "学习雷锋好榜样，来到久仰的雷锋纪念馆，瞻仰这位平凡而伟大的雷锋，心底敬意油然而生，是的，我们要向雷锋同志学习，学习他乐于助人、无私奉献的精神，雷锋同志一生清苦，却没有因此而退俗，我们应该经常带孩子来这里学习、敬仰",
+				"score": 5,
+				"recommend": "",
+				"src_type": "dp_mapi",
+				"review_id": "600771557",
+				"review_weburl": "",
+				"gaode_coin": 20,
+				"like_num": "0",
+				"aos_tag_score": 24,
+				"high_quality": 0,
+				"gold_num": 2,
+				"time": "2019-08-22",
+				"author_id": ""
+			}, {
+				"quality_flag": 72,
+				"author_profileurl": "http://store.is.autonavi.com/showpic/27b488b5dcaf803b593b4761703720d1",
+				"review_wapurl": "http://m.dianping.com/shop/review/562721314",
+				"labels": [],
+				"src_name": "大众点评",
+				"review_appurl": {
+					"ios_appurl": "",
+					"android_appurl": ""
+				},
+				"gold_type": "23",
+				"pic_info": [{
+					"url": "http://store.is.autonavi.com/showpic/a7fa58f76c70fc5623c894daf7ddbb87",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/ca7f962d5c65b7844527edd4c4aff7cd",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/9ed21da6a4051ac70f5d8ece50aecee8",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/e1974350a78ee46dc4b2633dcdf01e0c",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/3a108628d73d799b9710573b57009375",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/0d71cd08fcdc9a976e5babdf1e5dc68c",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/ed9f13dc399f3d701bc6ae29317355ce",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/e9c5f89ad1b855fb7aa462aac9f796b6",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/5093df22fbe0875a16decd2686962a0d",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/62fff05305fd90aa35a32382aa203a9e",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/e99811a7952cb50ff5ed07f685731e8d",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/570be1ce6ecdf86d24df721eb0ef49ba",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/efa5eaf6547c138f0b5dfcc552610f7a",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/c454b33ae8cc38beae2a653d60dbe8c9",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/32cdbb99019f6339cecad802d655b29d",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/c771d3cd4b387b851870a733d769b4f7",
+					"source": "图片来源：大众点评"
+				}, {
+					"url": "http://store.is.autonavi.com/showpic/14ce0bb1d035b9b78c39ebef1919cdba",
+					"source": "图片来源：大众点评"
+				}],
+				"author": "小肥仙mh",
+				"review": "长沙篇 - 景点 (1)\n\n刚好来长沙的第二天就是雷锋纪念日 ，所以就决定去雷锋纪念馆看一看 ，了解一下这个人嘻嘻 -\n\n当天游客挺多的 ，也有小孩子 ，可能是家长带来熏陶一下雷锋的事迹 ~ 其实呀 ，如果这个社会多点雷锋这种人 ，人的冷漠速度也不会那么快了 。\n\n馆内还有放学习雷锋好榜样的歌 ，还有他生平挺多事迹的 ，哦对 ，还有纪念品哦 ，展柜的应该就是不销售的 ，开馆时间有拍哦 ，记得去之前看一下 ，别扑空了哦 。￼",
+				"score": 5,
+				"recommend": "",
+				"src_type": "dp_mapi",
+				"review_id": "562721314",
+				"review_weburl": "",
+				"gaode_coin": 20,
+				"like_num": "0",
+				"aos_tag_score": 22.400000000000002,
+				"high_quality": 0,
+				"gold_num": 20,
+				"time": "2019-06-13",
+				"author_id": ""
+			}]
+		},
+		"score": {
+			"星级": "4A景区",
+			"总分": "5.0"
+		},
+		"src_info": [],
+		"share_url": "http://wb.amap.com/?p=B02DB05TQB%2C28.203866%2C112.845096%2C%E6%B9%96%E5%8D%97%E9%9B%B7%E9%94%8B%E7%BA%AA%E5%BF%B5%E9%A6%86%2C%E9%95%BF%E6%B2%99%E5%B8%82%E6%9C%9B%E5%9F%8E%E5%8C%BA%E9%9B%B7%E9%94%8B%E9%95%87%E6%AD%A3%E5%85%B4%E8%B7%AF42%E5%8F%B7"
+	}
+}

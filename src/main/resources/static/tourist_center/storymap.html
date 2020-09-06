@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--leaflet-->
+    <link href="https://cdn.bootcss.com/leaflet/1.3.1/leaflet.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.bootcss.com/leaflet/1.3.1/leaflet.js" type="text/javascript"></script>
+    <!--axios-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!--vue-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!--底图插件1-->
+    <script type="text/javascript" src="./js/common/leaflet.ChineseTmsProviders.js"></script>
+    <!--bootstrap-->
+    <link type="text/css" rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/map1/style.css">
+    <!--jquery-->
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <!--故事地图插件-->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script type="text/javascript" src="./js/map1/storymap.js"></script>
+    <style>
+        .section1 {
+            background-color: darkolivegreen;
+        }
+
+        .address {
+            font-size: 16px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-weight: 600;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app-map" class="container-fluid">
+        <div class="row">
+
+            <div class="col-sm-6 col-md-6 main" style="background-image: url('./images/little_2.jpg');color: white">
+
+                <h1 class="page-header">故事长沙</h1>
+
+                <section data-place="overview" style="background-color:darkolivegreen;opacity: 0.6;font-size: 18px">
+                        <h2>长沙速览</h2>
+                        <p>长沙是湖南省省会，山清水秀、气候宜人，有风景独秀“霜叶红于二月花”的岳麓山，有水洲相拥“春来江水绿如蓝”的湘江；有在海内外享有盛名的“世界第八大奇迹”马王堆汉墓、“千年学府”岳麓书院及“三国东吴”简牍。古有云：“惟楚有才，于斯为盛”，在中国近现代史上，长沙更涌现了一批著名的政治家、军事家和文学家。这座有着2000余年悠久文化历史的古城，早在春秋时期，就是楚国雄踞南方的战略要地之一。
+                            此外，长沙还是一座时尚动感之都、美食之城。湖南卫视、超女快男风靡全国；街头巷尾随处可见飘香的小吃美食。总之，不论你是喜欢探寻历史还是崇尚青春奔放，亦或只为一饱口腹之欲，在长沙都能找到让你满意的答案。
+                            湘江：为长沙最重要的河流，由南向北贯穿全境，境内长度约75km。湘江自南向北贯穿长沙城区，把城市分为河东和河西两大部分。
+                            西岸：以文化教育为主。其灵魂驻扎之所“岳麓山”以及岳麓书院、科研机构、省内主要的高等学府和博物馆都在这里。
+                            东岸：以商业经济为主，商业区、酒吧街、美食街和酒店均坐落于此。
+                            天心区：是楚汉文化名城长沙的主要发源地，历史文化悠久。天心古阁、白沙古井、湖南第一师范、走马楼三国吴简、宋福王墓和贾谊故居等著名历史景观，及黄兴南路步行商业街、解放西路酒吧文化街、坡子街民俗名食街等商业街区都在该区域内。
+                        </p>
+                        <h3>最佳旅行时间</h3>
+                        <p>秋季是长沙的最佳旅游时间，可欣赏独立寒秋、湘江北去的橘子洲头，及霜叶红于二月花的岳麓山。
+                            长沙除盛夏气温较高以外，其余三季均适宜旅游。长沙的春天始于2月中旬后，此时气候多变，游客需多备衣服，以防感冒。11月下旬进入冬季，平均气温在5℃左右，有时会下雪，这时可到山里看冰凌。</p>
+                </section>
+
+                <section class="section1" id="spot" v-for="(item,index) in spotList" :data-place="'spot_'+item.cid">
+                    <h2 @click="showContent(item.cid)">{{item.spoName}}</h2>
+                    <div :id="item.cid" style="display: none" @click="hideContent(item.cid)">
+                        <p>{{item.thoughts}}</p>
+                        <img style="width: 100%;height: 100%;" :src="item.pictureUrl">
+                        <p class="address">{{item.address}}</p>
+                    </div>
+                </section>
+            </div>
+
+            <div id="map" class="col-sm-6 col-md-6 sidebar">
+
+            </div>
+
+        </div>
+    </div>
+    <script type="text/javascript">
+        var map;
+        var markers = {};
+        var markerLayer;
+        var polylineLayer;
+        new Vue({
+            el: "#app-map",
+            data: {
+                spotList: []
+            },
+            methods: {
+                //显示内容
+                showContent: function (id) {
+                    var element = "#" + id;
+                    $(element).show();
+                },
+                //隐藏内容
+                hideContent: function (id) {
+                    var element = "#" + id;
+                    $(element).hide();
+                }
+            },
+            //挂载时加载
+            mounted: function () {
+                var that = this;
+                //加载高德底图
+                var layers = {
+                    'test': L.tileLayer.chinaProvider('GaoDe.Normal.Map', {
+                        maxZoom: 18,
+                        minZoom: 0
+                    })
+                }
+
+                axios.get("http://120.79.198.96:8864/map/getSpotCheck")
+                    .then(function (res) {
+                        //console.log(res.data.data);
+                        if (res.data.code == "200") {
+                            that.spotList = res.data.data;
+                            //点集渲染,点图层构建,线图层构建
+                            markerLayer = L.layerGroup();
+                            polylineLayer = L.layerGroup();
+
+                            var polylineData = [];
+                            //分类游客打卡景区
+                            for (let i = 0; i < that.spotList.length; i++) {
+                                //若为新的一类
+                                if (!polylineData[that.spotList[i].sid]) {
+                                    var arr = [];
+                                    arr.push(that.spotList[i]);
+                                    polylineData[that.spotList[i].sid] = arr;
+                                } else {
+                                    polylineData[that.spotList[i].sid].push(that.spotList[i]);
+                                }
+                            }
+                            //console.log(polylineData);
+                            //点集
+                            var latlngs = [];
+                            var keys = Object.keys(polylineData);
+                            for (let i in keys) {
+                                latlngs[i] = polylineData[keys[i]]
+                            }
+
+
+
+                            for (let i = 0; i < that.spotList.length; i++) {
+                                var spot = that.spotList[i];
+                                //点
+                                markers["spot_" + spot.cid] = { lat: spot.lat, lon: spot.lng, zoom: 15 };
+                                markerLayer.addLayer(L.marker([spot.lat, spot.lng]));
+                            }
+
+                            polylineLayer.addLayer(L.polyline(latlngs, { color: 'red' }));
+                            //console.log(markers);
+                            that.$nextTick(() => {
+                                // 这里写jquery代码
+                                //console.log($('.main').find('[data-place]'));
+                                $('.main').storymap({
+                                    markers: markers,
+                                    createMap: function () {
+                                        //加载高德底图
+                                        const GeoDeBaseMap = L.tileLayer.chinaProvider('GaoDe.Satellite.Map', {
+                                            maxZoom: 18,
+                                            minZoom: 5
+                                        });
+                                        //景点图层
+
+                                        //路线图层
+
+                                        var normal = L.layerGroup([GeoDeBaseMap, markerLayer, polylineLayer]);
+                                        map = L.map("map", {
+                                            center: [28.196716240776073, 112.97485828399658],
+                                            zoom: 13,
+                                            layers: [normal]
+                                        });
+                                        return map;
+                                    }
+                                });
+                            })
+                        }
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                    })
+            }
+        })
+
+
+
+    </script>
+</body>
+
+</html>

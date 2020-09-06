@@ -1,0 +1,1 @@
+var B0FFH0MNUA = {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[]]}, "properties": {"id": "B0FFH0MNUA", "name": "\u6d4f\u9633\u77f3\u725b\u5be8\u98ce\u666f\u533a"}, "crs": {"type": "name", "properties": {"name": "epsg:3857"}}}]}

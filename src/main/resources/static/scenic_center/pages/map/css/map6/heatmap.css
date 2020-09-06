@@ -1,0 +1,34 @@
+#heatmap_mark,#toLocation {
+	position:absolute;
+	right:0
+}
+#heatmap_mark {
+	bottom:0;
+	background-color:rgba(73,73,72,.6);
+	border-radius:10px;
+	padding:1em
+}
+.heatmap_mark_text {
+	color:#dfdfdf
+}
+.heatmap_mark_title {
+	color:#fff;
+	font-size:16px
+}
+.linear_color {
+	margin-top:10px;
+	height:5px;
+	border-radius:2px;
+	width:400px;
+	background:-webkit-linear-gradient(left,rgba(0,0,0,.1),#00f,#0f0,#ff0,red,red)!important;
+	background:-moz-linear-gradient(left,rgba(0,0,0,.1),#00f,#0f0,#ff0,red,red)!important;
+	background:-ms-linear-gradient(left,rgba(0,0,0,.1),#00f,#0f0,#ff0,red,red)!important;
+	background:-o-linear-gradient(left,rgba(0,0,0,.1),#00f,#0f0,#ff0,red,red)!important;
+	background:linear-gradient(left,rgba(0,0,0,.1),#00f,#0f0,#ff0,red,red)!important
+}
+.heatmap_blue,.heatmap_green,.heatmap_red,.heatmap_result_red,.heatmap_yellow,.text_center {
+	text-align:center
+}
+.heatmap_color_span {
+	margin: 20px;
+}

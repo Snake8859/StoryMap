@@ -1,0 +1,1 @@
+var B02DB0TH84 = {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[]]}, "properties": {"id": "B02DB0TH84", "name": "\u4e1c\u65b9\u7ea2\u5e7f\u573a"}, "crs": {"type": "name", "properties": {"name": "epsg:3857"}}}]}

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>景区辅助决策系统</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="vendors/iconfonts/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
+  <!-- endplugins -->
+  <!-- style:css -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- endstyle -->
+  <link rel="shortcut icon" href="images/favicon.png" />
+  <!--vue-->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  <!--axios-->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <!--utils-->
+  <script src="./js/utils.js"></script>
+</head>
+
+<body>
+  <div id="web-index" class="container-scroller">
+    <!--导航栏开始-->
+    <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+
+      <!--logo 开始-->
+      <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+        <a class="navbar-brand brand-logo" href="index.html"><img src="images/logo.svg" alt="logo" /></a>
+        <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.svg" alt="logo" /></a>
+      </div>
+      <!--logo 结束-->
+
+      <!--侧边信息开始-->
+      <div class="navbar-menu-wrapper d-flex align-items-stretch">
+        <ul class="navbar-nav navbar-nav-right">
+          <!--人物框开始-->
+          <li class="nav-item nav-profile dropdown">
+            <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-toggle="dropdown"
+              aria-expanded="false">
+              <div class="nav-profile-img">
+                <img src="images/faces/face1.jpg" alt="image">
+                <span class="availability-status online"></span>
+              </div>
+              <div class="nav-profile-text">
+                <p class="mb-1 text-black">{{user.name}}</p>
+              </div>
+            </a>
+            <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
+              <a class="dropdown-item" @click="logout" href="#">
+                <i class="mdi mdi-logout mr-2 text-primary">
+                </i>
+                退出
+              </a>
+            </div>
+          </li>
+          <!--人物框结束-->
+
+          <!--全屏开始-->
+          <li class="nav-item d-none d-lg-block full-screen-link">
+            <a class="nav-link">
+              <i class="mdi mdi-fullscreen" id="fullscreen-button"></i>
+            </a>
+          </li>
+          <!--全屏结束-->
+        </ul>
+      </div>
+      <!--侧边信息结束-->
+    </nav>
+    <!--导航栏结束-->
+
+
+    <div class="container-fluid page-body-wrapper">
+      <!--左侧边框开始-->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <!--人物头像开始-->
+          <li class="nav-item nav-profile">
+            <a href="#" class="nav-link">
+              <div class="nav-profile-image">
+                <img src="images/faces/face1.jpg" alt="profile">
+                <span class="login-status online"></span>
+                <!--change to offline or busy as needed-->
+              </div>
+              <div class="nav-profile-text d-flex flex-column">
+                <span class="font-weight-bold mb-2">{{user.name}}</span>
+                <span class="text-secondary text-small">{{user.scenic_name}}</span>
+              </div>
+              <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
+            </a>
+          </li>
+          <!--人物头像结束-->
+
+          <!--景区信息开始-->
+          <li class="nav-item">
+            <a class="nav-link" :href="'pages/map/map1.html?sid='+user.sid" target="iframe_a">
+              <!--如果调用不同的界面，就可以将href指向要指向的html,target代表所处的那个框架的位置，保持不变-->
+              <span class="menu-title">景区信息</span>
+              <!--图标--> <i class="mdi mdi-home menu-icon"></i>
+            </a>
+          </li>
+          <!--景区信息结束-->
+
+        
+          <!--人流分析开始-->
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic1" aria-expanded="false">
+              <span class="menu-title">人流分析</span>
+              <i class="menu-arrow"></i>
+              <i class="mdi mdi-chart-bar menu-icon"></i>
+            </a>
+            <div class="collapse" id="ui-basic1">
+              <ul class="nav flex-column sub-menu">
+                <!--目前人流量分析只能做岳麓山景区-->
+                <li class="nav-item"> <a class="nav-link" href="pages/map/map6.html?sid=B0FFG0BPT6" target="iframe_a">人流量分析</a></li>
+                <!-- <li class="nav-item"> <a class="nav-link" href="pages/samples/blank-page.html">拥挤度分析</a></li> -->
+              </ul>
+            </div>
+          </li>
+          <!--人流分析结束-->
+
+          <!--用户分析开始-->
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic2" aria-expanded="false">
+              <span class="menu-title">用户分析</span>
+              <i class="menu-arrow"></i>
+              <i class="mdi mdi-contacts menu-icon"></i>
+            </a>
+            <div class="collapse" id="ui-basic2">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" :href="'pages/map/map7.html?sid='+user.sid"
+                    target="iframe_a">用户信息分析</a></li>
+                <li class="nav-item"> <a class="nav-link" :href="'pages/map/map8.html?sid='+user.sid"
+                    target="iframe_a">用户评价分析</a></li>
+              </ul>
+            </div>
+          </li>
+          <!--用户分析结束-->
+
+          <!--景区分析开始-->
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+              <span class="menu-title">景区分析</span>
+              <i class="menu-arrow"></i>
+              <i class="mdi mdi-crosshairs-gps menu-icon"></i>
+            </a>
+            <div class="collapse" id="ui-basic">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" :href="'pages/map/map2.html?sid='+user.sid" target="iframe_a">景区对比分析</a></li>
+                <li class="nav-item"> <a class="nav-link" :href="'pages/map/map3.html?sid='+user.sid" target="iframe_a">景点打卡分析</a></li>
+                <li class="nav-item"> <a class="nav-link" :href="'pages/map/map5.html?sid='+user.sid" target="iframe_a">景区评估生成</a></li>
+                <!-- <li class="nav-item"> <a class="nav-link" :href="'pages/map/map4.html?sid='+user.sid" target="iframe_a">景区评估分析</a></li> -->
+              </ul>
+            </div>
+          </li>
+          <!--景区分析结束-->
+
+        
+          <!-- <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#general-pages" aria-expanded="false" aria-controls="general-pages">
+              <span class="menu-title">提示信息</span>
+              <i class="menu-arrow"></i>
+              <i class="mdi mdi-medical-bag menu-icon"></i>
+            </a>
+            <div class="collapse" id="general-pages">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="pages/samples/blank-page.html"> Blank Page </a></li>
+                <li class="nav-item"> <a class="nav-link" href="pages/samples/blank-page.html"> Login </a></li>
+                <li class="nav-item"> <a class="nav-link" href="pages/samples/blank-page.html"> Register </a></li>
+                <li class="nav-item"> <a class="nav-link" href="pages/samples/error-404.html"> 404 </a></li>
+                <li class="nav-item"> <a class="nav-link" href="pages/samples/error-500.html"> 500 </a></li>
+              </ul>
+              </div>
+          </li> -->
+        </ul>
+      </nav>
+      <!--左侧边框结束-->
+
+      <!--主体部分开始-->
+      <div class="main-panel">
+        <iframe :src="'pages/map/map1.html?sid='+user.sid" name="iframe_a" width=100% height=100%></iframe>
+      </div>
+      <!--主体部分结束-->
+
+    </div>
+  </div>
+  <!-- plugins:js -->
+  <script src="vendors/js/vendor.bundle.base.js"></script>
+  <script src="vendors/js/vendor.bundle.addons.js"></script>
+  <!-- endplugins -->
+</body>
+<script>
+  //获取url参数
+  var uid = getQueryVariable("uid");
+
+  var web_index = new Vue({
+    el: "#web-index",
+    data: function () {
+      return {
+        user:{
+          name:"", //管理员名称
+          scenic_name:"", //所属景区
+          sid:""//景区id
+        },
+        iframeSrc:""
+      }
+    },
+    methods: {
+      //校验登录
+      checkLogin:function(uid){
+        var that = this;
+        if(uid!=""){
+          //console.log(uid);
+          axios.get("http://120.79.198.96:8864/user/checkLogin",{
+                  params:{
+                    uid:uid
+                  }
+                })
+                .then(function(res){
+                  //console.log(res);
+                  if(res.data.code!="200"){//用户登录过期
+                    alert(res.data.msg)
+                    //跳回登录页面
+                    window.location.href="/scenic_center/login.html";
+                  }else{
+                    that.user.name = res.data.data.name
+                    that.user.scenic_name = res.data.data.tbScenicInfo.name
+                    that.user.sid = res.data.data.tbScenicInfo.sid
+                    //渲染景区信息url
+                    //that.iframeSrc = "pages/map/map1.html?sid="+ res.data.data.tbScenicInfo.sid
+                    //渲染用户信息url
+
+                  }
+                })
+                .catch(function(err){
+                  console.log(err);
+                })
+            
+        }else{//未携带uid
+          //跳回登录页面
+          window.location.href="/scenic_center/login.html";
+        }
+      },
+      //登出
+      logout:function(){
+          axios.get("http://120.79.198.96:8864/user/logout",{
+            params:{
+              uid:uid
+            }
+          })
+          .then(function(res){
+              //console.log(res)
+              if(res.data.code=="200"){
+                alert("退出成功");
+                window.location.href="/scenic_center/login.html";
+              }else{
+                alert("退出失败");
+              }
+          })
+          .catch(function(err){
+              console.log(err);
+          })
+      }
+    },
+    mounted: function () {
+        //校验登录状态
+        this.checkLogin(uid);
+    }
+  })
+
+</script>
+
+</html>

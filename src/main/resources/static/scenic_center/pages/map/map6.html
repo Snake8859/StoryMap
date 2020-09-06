@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>岳麓山区域人流量分析</title>
+    <!--leaflet-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+        integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+        crossorigin=""></script>
+    <!--jquery-->
+    <script src="https://cdn.bootcss.com/jquery/1.9.1/jquery.js"></script>
+    <!--Bootstrap3-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+    <!--vue-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!--axios-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!--底图插件1-->
+    <script src="./js/common/leaflet.ChineseTmsProviders.js"></script>
+    <!--底图插件2-->
+    <!-- <script src="./js/common/esri-leaflet.js"></script> -->
+    <!--时间序列-->
+    <link type="text/css" rel="stylesheet" href="./css/map6/ystep.css">
+    <script src="./js/map6/setStep.js"></script>
+    <!--时间插件-->
+    <link href="css/map6/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="css/map6/font-awesome.min.css" rel="stylesheet">
+    <link href="css/map6/animate.min.css" rel="stylesheet">
+    <link href="css/map6/prettify-1.0.css" rel="stylesheet">
+    <link href="css/map6/base.css" rel="stylesheet">
+    <link href="css/map6/default.css" rel="stylesheet">
+    <script src="js/map6/moment-with-locales.js"></script>
+    <script src="js/map6/bootstrap-datetimepicker.js"></script>
+    <!--工具类-->
+    <script src="../../js/utils.js"></script>
+    <!--geojson-->
+    <script src="./js/geojson/test.js"></script>
+    <!--热力图插件-->
+    <script src="./js/map6/heatmap.js"></script>
+    <script src="./js/map6/leaflet-heatmap.js"></script>
+    <link href="css/map6/heatmap.css" rel="stylesheet">
+    <style>
+        #app-map6 {
+            height: 100vh;
+            width: 100%;
+        }
+
+        #map {
+            height: 84%;
+            width: 100%
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app-map6">
+        <div id="map">
+            <!--人流量图例-->
+            <div id="heatmap_mark" style="z-index: 9999">
+                <div><span class="heatmap_mark_title">颜色对应人口密度</span> <span class="heatmap_mark_text"
+                        style="float:right;padding-top:5px" id="heatmap_mark_density">人/100平方米</span></div>
+                <div class="linear_color"></div>
+                <span class="heatmap_blue heatmap_mark_text heatmap_color_span">0-5</span>
+                <span class="heatmap_green heatmap_mark_text heatmap_color_span">6-11</span>
+                <span class="heatmap_yellow heatmap_mark_text heatmap_color_span">12-17</span>
+                <span class="heatmap_red heatmap_mark_text heatmap_color_span">18-20</span>
+                <span class="heatmap_result_red heatmap_mark_text heatmap_color_span">&gt;20</span>
+            </div>
+            <!--人流量图例end-->
+        </div>
+
+        <!--时间序列-->
+        <div class='stepCont stepCont1'>
+            <div class='ystep-container ystep-lg ystep-blue'>
+            </div>
+        </div>
+        <!--时间序列end-->
+
+        <!--时间选择器-->
+        <div class='form-inline'>
+            <div class='col-md-offset-4 col-md-4'>
+                <label>
+                    时间&nbsp;&nbsp;&nbsp;
+                </label>
+                <div class='input-group date'>
+                    <input type='text' class='form-control' id='datetimepicker' />
+                </div>
+            </div>
+        </div>
+        <button class='btn btn-primary btn-sm' @click='play'>
+            {{playInfo}}
+        </button>
+        <!--时间选择器end-->
+    </div>
+
+</body>
+<script type="text/javascript">
+    var map;        //地图
+    var dialog;     //对话框
+    var heatTempLayer; //热力图临时图层
+    var step; //时间序列对象
+    var interval;//定时器对象
+    var app = new Vue({
+        el: "#app-map6",
+        data: function () {
+            return {
+                id: "",
+                playInfo: "播放"
+            }
+        },
+        methods: {
+            //人流量分析
+            peopleAnalysis: function () {
+                var that = this;
+                var datetime = $("#datetimepicker").val();
+                var hour = $("li.ystep-step-active").html().split(":")[0];
+                //console.log(datetime+"-"+hour);
+                if (datetime != "") {
+                    //console.log(datetime)
+                    axios.get("http://120.79.198.96:8864/map/generateHeatData", {
+                        params: {
+                            dateTime: datetime,
+                            hour: hour
+                        }
+                    })
+                        .then(function (res) {
+                            //console.log(res);
+                            if (res.data.code == "200") {//热力图生成成功
+                                that.createHeatMap(res.data.data);
+                            } else {
+                                alert(res.data.msg + ",该日暂无人流量数据");
+                            }
+                        })
+                        .catch(function (err) {
+                            console.log(err);
+                        })
+                } else {
+                    alert("请先选择日期");
+                }
+            },
+            //热力图生成
+            createHeatMap: function (headData) {
+                //console.log(headData);
+                if (heatTempLayer != undefined) {
+                    map.removeLayer(heatTempLayer);
+                }
+                var cfg = {
+                    "radius": 20,
+                    "maxOpacity": 8,
+                    "useLocalExtrema": false,
+                    latField: 'lat',
+                    lngField: 'lng',
+                    valueField: 'count'
+                };
+                var heatmapLayer = new HeatmapOverlay(cfg);
+                heatmapLayer.setData({
+                    min: 0,
+                    max: 20,
+                    data: headData
+                })
+                heatTempLayer = heatmapLayer;
+                map.addLayer(heatmapLayer);
+            },
+            //播放
+            play: function () {
+                var datetime = $("#datetimepicker").val();
+                if (datetime != "") {
+                    if (this.playInfo == "播放") { //若开始播放
+                        console.log("播放");
+                        this.playInfo = "暂停"
+                        interval = setInterval("step.autoPlay()", "1500");
+                    }
+                    else {//若暂停
+                        console.log("暂停");
+                        this.playInfo = "播放";
+                        clearInterval(interval);
+                    }
+                } else {
+                    alert("请先选择日期")
+                }
+            }
+        },
+        //挂载时加载
+        mounted: function () {
+            var that = this;
+            //加载高德底图
+            const GeoDeBaseMap = L.tileLayer.chinaProvider('GaoDe.Normal.Map', {
+                maxZoom: 18,
+                minZoom: 5
+            });
+
+            var normal = L.layerGroup([GeoDeBaseMap]);
+            map = L.map("map", {
+                center: [28.182849, 112.937353],
+                zoom: 15,
+                layers: [normal]
+            });
+
+
+            //时间序列插件
+            step = new SetStep({
+                content: '.stepCont1',
+                showBtn: false,
+            })
+            //时间插件
+            $('#datetimepicker').datetimepicker({
+                locale: 'zh-cn',
+                viewMode: 'days',
+                format: 'YYYY-MM-DD'
+            });
+        }
+    })
+
+</script>
+
+</html>

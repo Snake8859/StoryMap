@@ -1,0 +1,1 @@
+var B02DB0TYIP = {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[]]}, "properties": {"id": "B02DB0TYIP", "name": "\u77f3\u71d5\u6e56\u751f\u6001\u516c\u56ed-\u77f3\u71d5\u6e56\u68ee\u6797\u52a8\u7269\u56ed"}, "crs": {"type": "name", "properties": {"name": "epsg:3857"}}}]}

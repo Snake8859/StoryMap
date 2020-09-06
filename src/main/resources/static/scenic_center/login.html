@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width-device-width,initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="sie-edge" />
+  <link rel="stylesheet" type="text/css" href="css/login.css">
+  <title>登录与注册</title>
+
+   <!--下拉框-->
+   <link href="./css/jquery.searchableSelect.css" rel="stylesheet" type="text/css">
+   <script type="text/javascript" src="./js/jquery-1.11.1.min.js"></script>
+   <script type="text/javascript" src="./js/jquery.searchableSelect.js"></script>
+
+  <!--vue-->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <!--axios-->
+  <script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <!--图标库-->
+  <script type="text/javascript" src="https://unpkg.com/ionicons@4.2.2/dist/ionicons.js"></script>
+  <!--md5加密-->
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.10.0/js/md5.js"></script>
+  <!--utils-->
+  <script type="text/javascript" src="./js/utils.js"></script>
+ 
+  
+</head>
+
+<body>
+
+  <div class="container" id="container">
+    <div class="form-container sign-up-container">
+      <div class="login-container">
+        <h1>注册</h1>
+        <input type="text" v-model="registerUser.account" placeholder="账号(邮箱或手机号码)">
+        <input type="password" v-model="registerUser.password" placeholder="密码">
+        <input type="text" v-model="registerUser.name" placeholder="姓名">
+        <select>
+        </select>
+        <button @click="register">注册</button>
+      </div>
+    </div>
+    <div class="form-container sign-in-container">
+      <div class="login-container">
+        <h1>登录</h1>
+        <input type="text" v-model="loginUser.account"  placeholder="账号(邮箱或手机号码)">
+        <input type="password" v-model="loginUser.password" placeholder="密码">
+        <button @click="login">登录</button>
+      </div>
+    </div>
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <h1>欢迎回来</h1>
+          <p>与我们保持联系请登录您的个人信息</p>
+          <button class="ghost" id="signIn">登录</button>
+        </div>
+        <div class="overlay-panel overlay-right">
+          <h1>欢迎光临</h1>
+          <p>输入您的个人资料，并与我们一起开始旅程</p>
+          <button class="ghost" id="signUp">注册</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+    var web_login = new Vue({
+      el: "#container",
+      data: function () {
+        return {
+          loginUser:{
+            account:"",
+            password:"",
+          },
+          registerUser:{
+            account:"",
+            password:"",
+            name:"",
+          },
+          scenicInfo:{
+            sid:"",
+            adcode:"",
+            location:""
+          }
+        }
+      },
+      methods: {
+        //登录
+        login:function(){
+          //console.log(this.loginUser);
+          //暂不邮箱或者手机号码校验
+          var that = this;
+          var flag = checkObjProp(this.loginUser)
+          if(flag){
+              //axios.defaults.withCredentials = true
+              axios.get("http://120.79.198.96:8864/user/login",{
+                  params:{
+                    account:that.loginUser.account,
+                    password:md5(that.loginUser.password)
+                  }
+                })
+                .then(function(res){
+                    //console.log(res);
+                    //登录判断
+                    if(res.data.code=="200"){
+                      //登录成功，跳转到首页
+                      window.location.href="/scenic_center/index.html?uid="+res.data.data.uid
+                    }else{
+                      alert("账号或者密码错误")
+                    }
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+          }else{
+            alert("用户名或者密码不能为空")
+          }
+        },
+        //注册
+        register:function(){
+          //console.log(this.registerUser);
+          //暂不邮箱或者手机号码校验
+          var that = this;
+          //获取景区id
+          if(document.getElementsByClassName("searchable-select-item selected")[0]!=undefined){
+            this.scenicInfo.sid = document.getElementsByClassName("searchable-select-item selected")[0].dataset.sid;
+            this.scenicInfo.adcode = document.getElementsByClassName("searchable-select-item selected")[0].dataset.adcode;
+            this.scenicInfo.location = document.getElementsByClassName("searchable-select-item selected")[0].dataset.location;
+          }
+          var flag = checkObjProp(this.registerUser)
+          if(flag){
+            /**
+             * 为了便于@RequestBody 和 @RequestParam可以同时使用
+             * post请求url带上cityCode和location
+             */
+             axios.post("http://120.79.198.96:8864/user/register?cityCode="+that.scenicInfo.adcode+"&location="+that.scenicInfo.location,{
+                  account:that.registerUser.account,
+                  password:md5(that.registerUser.password),
+                  name:that.registerUser.name,
+                  sid:that.scenicInfo.sid
+             })
+             .then(function(res){
+                //console.log(res);
+                if(res.data.code=="200"){
+                  alert("注册成功，请登录");
+                  window.location.reload();
+                }else{
+                  alert(res.data.msg);
+                }
+             })
+             .catch(function(err){
+                console.log(err);
+             })
+          }else{
+            alert("请确保信息不为空")
+          }
+          
+        },
+        //初始化动画
+        initAnimation: function () {
+          $('select').searchableSelect();
+          const signUpButton = document.getElementById('signUp');
+          const signInButton = document.getElementById('signIn');
+          const container = document.getElementById('container');
+          signUpButton.addEventListener('click', () => {
+            container.classList.add("right-panel-active");
+          });
+
+          signInButton.addEventListener('click', () => {
+            container.classList.remove("right-panel-active");
+          });
+        },
+        //初始化下拉框 - 弃用
+        initSelect:function(){
+           var that = this
+           axios.get("http://120.79.198.96:8864/map/getAllScenicInfo")
+                .then(function(res){
+                  console.log(res);
+                  if(res.data.code=="200"){
+                      that.selectItems = res.data.data
+                  }
+                })
+                .catch(function(err){
+                  console.log(err);
+                })
+        }
+      },
+      
+      //挂载时触发
+      mounted: function () {
+          this.initAnimation();
+          //this.initSelect();
+      }
+    })
+  </script>
+
+</body>
+
+</html>

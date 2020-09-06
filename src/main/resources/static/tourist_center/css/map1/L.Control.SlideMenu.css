@@ -1,0 +1,35 @@
+.leaflet-control-slidemenu{
+    cursor: pointer;
+}
+
+.leaflet-menu{
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid black;
+    overflow: auto;
+    cursor: default;
+    z-index: 9999;
+}
+
+.leaflet-menu::-webkit-scrollbar{
+    width: 7px;
+    height: 7px;
+    background: #f2f2f2;
+}
+
+.leaflet-menu::-webkit-scrollbar-thumb{
+    border-radius: 2px;
+    background: #777;   
+}
+
+.leaflet-menu-close-button{
+    background-color: transparent;
+    border: none;
+    font-size: 14pt;
+    color: #777;
+    cursor: pointer;
+}
+
+.leaflet-menu-close-button:hover{
+    color: #4285F4;
+}
