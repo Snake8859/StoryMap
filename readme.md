@@ -14,44 +14,44 @@ ESRI杯大赛作品之一
 
 ## 功能设计
 
-![](E:\本科\04Esri杯项目\storymap\docs\images\功能设计图.png)
+![](https://raw.githubusercontent.com/Snake8859/StoryMap/master/docs/images/功能设计图.png)
 
 ## 效果
 
 ### Web端
 
-<img src="E:\本科\04Esri杯项目\storymap\docs\images\1.登录.jpg" style="zoom: 50%;" />
+<img src="https://raw.githubusercontent.com/Snake8859/StoryMap/master/docs/images/1.登录.jpg" style="zoom: 50%;" />
 
-<img src="E:\本科\04Esri杯项目\storymap\docs\images\2.注册.jpg" style="zoom:50%;" />
+<img src="https://raw.githubusercontent.com/Snake8859/StoryMap/master/docs/images/2.注册.jpg" style="zoom:50%;" />
 
-<img src="E:\本科\04Esri杯项目\storymap\docs\images\3.主页面.jpg" style="zoom:50%;" />
+<img src="https://raw.githubusercontent.com/Snake8859/StoryMap/master/docs/images/3.主页面.jpg" style="zoom:50%;" />
 
-<img src="E:\本科\04Esri杯项目\storymap\docs\images\6.人流量密度.jpg" style="zoom:50%;" />
+<img src="https://raw.githubusercontent.com/Snake8859/StoryMap/master/docs/images/6.人流量密度.jpg" style="zoom:50%;" />
 
-<img src="E:\本科\04Esri杯项目\storymap\docs\images\7.用户信息分析.jpg" style="zoom:50%;" />
+<img src="https://raw.githubusercontent.com/Snake8859/StoryMap/master/docs/images/7.用户信息分析.jpg" style="zoom:50%;" />
 
-<img src="E:\本科\04Esri杯项目\storymap\docs\images\8.用户评价分析.jpg" style="zoom:50%;" />
+<img src="https://raw.githubusercontent.com/Snake8859/StoryMap/master/docs/images/8.用户评价分析.jpg" style="zoom:50%;" />
 
-<img src="E:\本科\04Esri杯项目\storymap\docs\images\9.景区对比分析（横向）.jpg" style="zoom:50%;" />
+<img src="https://raw.githubusercontent.com/Snake8859/StoryMap/master/docs/images/9.景区对比分析（横向）.jpg" style="zoom:50%;" />
 
-<img src="E:\本科\04Esri杯项目\storymap\docs\images\10.景区对比分析（纵向）.jpg" style="zoom:50%;" />
+<img src="https://raw.githubusercontent.com/Snake8859/StoryMap/master/docs/images/10.景区对比分析（纵向）.jpg" style="zoom:50%;" />
 
-<img src="E:\本科\04Esri杯项目\storymap\docs\images\11.景区打卡分析 .jpg" style="zoom:50%;" />
+<img src="https://raw.githubusercontent.com/Snake8859/StoryMap/master/docs/images/11.景区打卡分析 .jpg" style="zoom:50%;" />
 
-<img src="E:\本科\04Esri杯项目\storymap\docs\images\12.景区评估分析.jpg" style="zoom:50%;" />
+<img src="https://raw.githubusercontent.com/Snake8859/StoryMap/master/docs/images/12.景区评估分析.jpg" style="zoom:50%;" />
 
 ### 移动端
 
-<img src="E:\本科\04Esri杯项目\storymap\docs\images\2.周边景区.jpg" style="zoom:50%;" />
+<img src="https://raw.githubusercontent.com/Snake8859/StoryMap/master/docs/images/2.周边景区.jpg" style="zoom:50%;" />
 
-<img src="E:\本科\04Esri杯项目\storymap\docs\images\3.周边景区点击.jpg" style="zoom:50%;" />
+<img src="https://raw.githubusercontent.com/Snake8859/StoryMap/master/docs/images/3.周边景区点击.jpg" style="zoom:50%;" />
 
-<img src="E:\本科\04Esri杯项目\storymap\docs\images\6.周边设施-酒店.jpg" alt="6.周边设施-酒店" style="zoom:50%;" />
+<img src="https://raw.githubusercontent.com/Snake8859/StoryMap/master/docs/images/6.周边设施-酒店.jpg" alt="6.周边设施-酒店" style="zoom:50%;" />
 
-<img src="E:\本科\04Esri杯项目\storymap\docs\images\9.查看景点.jpg" alt="9.查看景点" style="zoom:50%;" />
+<img src="https://raw.githubusercontent.com/Snake8859/StoryMap/master/docs/images/9.查看景点.jpg" alt="9.查看景点" style="zoom:50%;" />
 
-<img src="E:\本科\04Esri杯项目\storymap\docs\images\10.查看打卡点.jpg" alt="10.查看打卡点" style="zoom:50%;" />
+<img src="https://raw.githubusercontent.com/Snake8859/StoryMap/master/docs/images/10.查看打卡点.jpg" alt="10.查看打卡点" style="zoom:50%;" />
 
-<img src="E:\本科\04Esri杯项目\storymap\docs\images\11故事地图（移动端）.jpg" alt="11故事地图（移动端）"  />
+<img src="https://raw.githubusercontent.com/Snake8859/StoryMap/master/docs/images/11故事地图（移动端）.jpg" alt="11故事地图（移动端）"  />
 
-<img src="E:\本科\04Esri杯项目\storymap\docs\images\12故事地图（移动端）.jpg" alt="12故事地图（移动端）"  />
+<img src="https://raw.githubusercontent.com/Snake8859/StoryMap/master/docs/images/12故事地图（移动端）.jpg" alt="12故事地图（移动端）"  />
